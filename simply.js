@@ -1,4 +1,3 @@
-
 var count = parseInt(localStorage.getItem('count')) || 0;
 
 simply.on('longClick', function(e) {
@@ -21,7 +20,7 @@ simply.on('longClick', function(e) {
   } else if (e.button === 'down') {
     simply.subtitle(--count);
   }
-    localStorage.setItem('count'), count);
+    localStorage.setItem('count', count);
 });
 
 simply.text({ title: 'Counter', subtitle: count });
