@@ -13,6 +13,8 @@ int MOTOR = D2;
 int HVDIM = A1;
 int SWITCH = D3;
 
+String timeServer = "http://www.timeapi.org/";
+
 String getValue(String data, char separator, int index) {
   int found = 0;
   int strIndex[] = {0, -1};
@@ -29,6 +31,24 @@ String getValue(String data, char separator, int index) {
   return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
+int[] getTime() {
+  String timeString = client.read("GET utc/now?\H:\M:\S");
+  String
+}
+
+void motorOn() {
+  digitalWrite(MOTOR, HIGH);
+  delay(5000);
+  digitalWrite(MOTOR, LOW);
+  
+  if (motorState == false) {
+    motorState = true;
+  } else {
+    motorState = false;
+  }
+
+}
+
 void fade(String command){
     String percent = getValue(command, ',', 0);
     String fadeTime = getValue(command, ',', 1);
@@ -36,6 +56,7 @@ void fade(String command){
     Serial.println(percent + " " + fadeTime + " " + id);
 }
 
+///////////////////////////////////////////SETUP////////////
 void setup(){
 	pinMode(LEDSTRIP, OUTPUT);
 	pinMode(ZEROCROSS, INPUT);
@@ -43,18 +64,65 @@ void setup(){
 	pinMode(MOTOR, OUTPUT);
 	pinMode(HVDIM, INPUT);
 	pinMode(SWITCH, INPUT);
-    Serial.begin(9600);
-//	Spark.function("fade", fade);
+  Serial.begin(9600);
+
+  //	Spark.function("fade", fade);
 	Spark.variable("motorState", &motorState, INT);
 	Spark.variable("switchState", &switchState, INT);
 	Spark.variable("motionState", &motionState, INT);
 	Spark.variable("dimPercentLight", &dimPercentLight, INT);
 	Spark.variable("dimPercentLED", &dimPercentLED, INT);
+
+  //setup
+  if (client.connect(timeServer, 80)) {
+    Serial.println("connected");
+    client.println("GET utc/now?\H:\M:\S");
+    client.println();
+  }  else {
+    Serial.println("connection failed");
+  }
 }
 
-
+/////////////////////////////////LOOP//////////////////
 void loop(){
-    fade("percentage,time,ID");
-    Serial.println("Boat!");
+  fade("percentage,time,ID");
+  Serial.println("Boat!");
+
+  if (SWITCH == HIGH) {
+    /* code */
+  } else if (SWITCH == LOW) {
+    /* code */
+  } else if (MOTION == HIGH) {
+    /* code */
+  } else if (MOTION == LOW) {
+    /* code */
+  } else if (ZEROCROSS == HIGH) {
+    /* code */
+  } else if (ZEROCROSS == LOW) {
+    /* code */
+  }
 }
+
+
+
+
+
+//loop
+if (client.available()) {
+  char c = client.read();
+  Serial.print(c);
+}
+
+if (!client.connected()) {
+  Serial.println();
+  Serial.println("disconnecting.");
+  client.stop();
+}
+
+
+
+
+
+
+
 
