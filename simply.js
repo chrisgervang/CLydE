@@ -2,7 +2,7 @@ var count = parseInt(localStorage.getItem('count')) || 0;
 
 simply.on('longClick', function(e) {
   if (e.button === 'select') 
-    simply.body(text, clear);
+    simply.body(text, true);
 });
 
 simply.on('singleClick', function(e) {
