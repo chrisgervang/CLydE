@@ -1,5 +1,5 @@
 var state = 0;
-var textArr = {title: 'Canoe', body: 'Boat' 'Ship' state};
+var textArr = {body: 'Canoe', title: 'Boat', body: 'Ship', body: state};
 simply.text(textArr);
 
 var changeState = function(x) {
@@ -15,12 +15,15 @@ var changeState = function(x) {
   };
 
 simply.on('singleClick', function(e) {
-  if (e.button === 'up') 
-    if (state>0)
+  if (e.button === 'up') {
+    if (state>0) {
       changeState(-1);
-      else if (e.button === 'down') 
-        if (state<2)
+    }
+     } else if (e.button === 'down') {
+        if (state<2) {
           changeState(1);
+        }
+     }
           else if (e.button === 'select') {
           }
 });
