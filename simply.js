@@ -30,7 +30,7 @@ simply.on('singleClick', function(e) {                                          
   if ((e.button === 'select') && (home === 1)) {                                      //If select pressed from curtain state
       //toggle curtains
       ajax({ url: 'http://10.55.54.162:3000/curtain' }, function(data){
-        simply.subtitle(data.return_value);
+        //simply.subtitle(data.return_value);
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
       });
@@ -63,7 +63,7 @@ simply.on('singleClick', function(e) {                                          
     backlight += 10;
 
     ajax({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
-        simply.subtitle(data.return_value + " " + backlight);
+        simply.subtitle(backlight);
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
       });
@@ -73,7 +73,7 @@ simply.on('singleClick', function(e) {                                          
     backlight -= 10;
     //turn down STRIP
     ajax({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
-        simply.subtitle(data.return_value + " " + backlight);
+        simply.subtitle(backlight);
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
       });

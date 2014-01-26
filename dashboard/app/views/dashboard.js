@@ -66,10 +66,41 @@ define(['jquery', 'jquery-ui', 'text!views/dashboard.htm', 'less!views/dashboard
         	});
 
         	$('.blinds').on('click', function(){
+            
+
+            $.get("http://10.55.54.162:3000/curtain", function( data ) {
+              //$( ".result" ).html( data );
+              console.log( "CURTAIN" );
+            });
         		$(this).toggleClass('open').toggleClass('closed');
         	});
 
-        	$('.lightswitch').on('click', function(){
+        	$('.lightswitch').on('click', function(e){
+            //alert($(this).hasClass('on'));
+            if ($(e.target).hasClass('on')) {
+              $.get("http://10.55.54.162:3000/dimLights?params=0,20,A", function( data ) {
+                //$( ".result" ).html( data );
+                console.log( "light off" );
+              });
+
+//               $.ajax({
+//   url: url,
+//   data: data,
+//   success: success,
+//   dataType: dataType
+// });
+              //alert($(this).on);
+            } else if ($(e.target).hasClass('off')){
+              $.get("http://10.55.54.162:3000/dimLights?params=255,20,A", function( data ) {
+                //$( ".result" ).html( data );
+                 console.log( "light on" );
+             });
+            }
+
+            $.get("http://10.55.54.162:3000/dimLights?params=0,20,A", function( data ) {
+              //$( ".result" ).html( data );
+              console.log( "CURTAIN" );
+            });
         		$(this).toggleClass('on').toggleClass('off');
         	});
 
@@ -79,6 +110,10 @@ define(['jquery', 'jquery-ui', 'text!views/dashboard.htm', 'less!views/dashboard
         	});
 
         	$('.force-wake').on('click', function(){
+            $.get("ajax/test.html", function( data ) {
+              //$( ".result" ).html( data );
+              console.log( "WAKE" );
+            });
         		var that = $(this)
         		that.addClass('clicked');
         		setTimeout(function(){
