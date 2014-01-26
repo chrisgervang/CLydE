@@ -31,12 +31,12 @@ simply.on('singleClick', function(e) {                                          
       //toggle curtains
 
       curtains = (curtains+1)%2; 
+      simply.subtitle(curtains);   
       ajax({ url: 'http://10.55.54.162:3000/curtain' }, function(data){
         //simply.subtitle(data.return_value);
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
-      });                                                     //switcth off between 1 and 0
-      simply.subtitle(curtains);                                                      //print from buffer
+      });                                                     //switcth off between 1 and 0                                                   //print from buffer
     }
   if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) { //up or down button from curtains
     state = 1;                                                                        //prepare ffor curtains
