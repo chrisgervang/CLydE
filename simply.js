@@ -1,5 +1,6 @@
 var state = 1;
 var curtains = 0;
+var home = 1;
 var textArr = {title: 'Curtains', subtitle: 'Backlight', body: 'Light'};
 simply.text(textArr);
 simply.style(type = 'large');
@@ -26,12 +27,20 @@ simply.on('singleClick', function(e) {
       changeState(0);
     }
   if (e.button === 'select') {
+      home = 0;
+      while (home === 0) {
       if (state === 1) {
         textArr = {title: 'Curtains', subtitle: ' ', body: 'Toggle curtains'};
         simply.text(textArr);
-        simply.on('singleClick', function(e) {
-          if (e.button === 'select') 
+        simply.on('singleClick', function(g) {
+          if (g.button === 'select') {
             simply.subtext((curtains+1)%2);
+          }
+          if (g.button === 'up') || if (g.button === 'down') {
+            state = 2;
+            simply.text(textArr);
+            home = 1;
+          }
         });
       }
       if (state === 2) {
@@ -41,6 +50,7 @@ simply.on('singleClick', function(e) {
       if (state === 3) {
         textArr = {title: 'Backlight', subtitle: ' ', body: 'Toggle backlight'};
         simply.text(textArr);
+      }
       }
     }
 });
