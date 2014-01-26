@@ -13,6 +13,7 @@ function changeState(x) {
         textArr = {body: 'Canoe', body: 'Boat', title: 'Ship', body: state};
      }
   simply.text(textArr);
+  return;
   };
 
 simply.on('singleClick', function(e) {
