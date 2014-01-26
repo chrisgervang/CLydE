@@ -5,8 +5,6 @@
 //test evrything :D
 //dot i cross t
 
-#include <TimerOne.h>                    
-
 TCPClient client;
 
 //State variables
@@ -24,7 +22,7 @@ int ZEROCROSS = D1;
 int MOTION = D0;
 int MOTOR = D2;
 int HVDIM = A1;
-int SWITCH = D3;
+int SWITCH = D4;
 
 byte timeServer[] = {50, 63, 202, 26};
 
@@ -94,37 +92,41 @@ int fade(String args){
 
     if (id == "A") { //LED
       if(dimPercentLED < percentI) {
-          for(int fadeValue = dimPercentLED ; fadeValue <= percentI; fadeValue +=1) { 
+          for(int fadeValue = dimPercentLED ; fadeValue <= percentI; fadeValue +=5) { 
           // sets the value (range from 0 to 255):
           analogWrite(LEDSTRIP, fadeValue);         
           // wait for 30 milliseconds to see the dimming effect    
-          delay(fadeTimeI);                            
+          delay(fadeTimeI);
+          dimPercentLED = fadeValue;
         }
         return 1;
       } else if (dimPercentLED > percentI) {
-          for(int fadeValue = dimPercentLED ; fadeValue >= percentI; fadeValue -=1) { 
+          for(int fadeValue = dimPercentLED ; fadeValue >= percentI; fadeValue -=5) { 
             // sets the value (range from 0 to 255):
             analogWrite(LEDSTRIP, fadeValue);         
             // wait for 30 milliseconds to see the dimming effect    
             delay(fadeTimeI); 
+            dimPercentLED = fadeValue;
           }
           return 1;
       }
     } else { //ZCT
       if (dimPercentLight < percentI){
-        for (int fadeValue = dimPercentLight; fadeValue <= percentI; fadeValue+=1){
+        for (int fadeValue = dimPercentLight; fadeValue <= percentI; fadeValue+=5){
         // sets the value (range from 0 to 128):          
         dim = fadeValue;
         // wait for 30 milliseconds to see the dimming effect    
         delay(fadeTimeI);
+        dimPercentLight = fadeValue;
         }
         return 1;
       } else if (dimPercentLight > percentI){
-        for(int fadeValue = dimPercentLight; fadeValue >= percentI; fadeValue+=1){
+        for(int fadeValue = dimPercentLight; fadeValue >= percentI; fadeValue+=5){
           // sets the value (range from 0 to 128):          
           dim = fadeValue;
           // wait for 30 milliseconds to see the dimming effect    
           delay(fadeTimeI);
+          dimPercentLED = fadeValue;
         }
         return 1;
       }
@@ -141,36 +143,37 @@ int setFade(String args){
       analogWrite(LEDSTRIP, percentI);
       return 1;
     } else { //id == "B"
-      dim = percent;
+      dim = percentI;
       return 1;
     }
     return -1;
 }
 
 int hitSwitch(){
-    if (switchState == 1){
-        fade("255,20,A");
-        fade("255,20,B");
-        return 1;
-    } else {
-        fade("0,20,A");
-        fade("0,20,B");
-        return 0;
-    }
+    Serial.println("HIT");
+    // if (switchState == 1){
+    //     fade("255,20,A");
+    //     fade("255,20,B");
+    return 1;
+    // } else {
+    //     fade("0,20,A");
+    //     fade("0,20,B");
+    //     return 0;
+    //}
     
 }
 
 //Motion detector
 void nightLight(){
-    if (motionState == 1){
-        fade("13,20,A");
-        fade("13,20,B");
-        delay(10000);
-        if (motionState == 0) {
-            fade("0,20,A");
-            fade("0,20,B");
-        }
+  if (motionState == 0){
+    fade("100,20,A");
+    //fade("100,20,B");
+    delay(10000);
+    if (motionState == 1) {
+      fade("0,60,A");
+      //fade("0,60,B");
     }
+  }
 }
 
 
@@ -208,8 +211,8 @@ void setup(){
   pinMode(LED, OUTPUT);
   pinMode(4, OUTPUT);                // Set SSR1 pin as output
   attachInterrupt(0, zero_cross_detect, RISING);   // Attach an Interupt to digital pin 2 (interupt 0),
-  Timer1.initialize(freqStep);
-  Timer1.attachInterrupt(dim_check,freqStep);
+  //Timer1.initialize(freqStep);
+  //Timer1.attachInterrupt(dim_check,freqStep);
 }
 
 
@@ -236,6 +239,7 @@ void getTime(String &hour, String &minute, String &second){
 void loop(){
   //fade("percentage,time,ID");
   //Serial.println("Boat!");
+  int sensesMotion = motionState;
 
   if (digitalRead(SWITCH) == HIGH) {
     switchState = true;
@@ -253,7 +257,11 @@ void loop(){
   //   if (client.connect(timeServer, 80)) {
   //   Serial.println("connected");
   //   motorOn("motorOn");
-  //   hitSwitch();sssss
+  //   hitSwitch();
+  Serial.println(motionState);
+  if (motionState != sensesMotion){
+    nightLight();
+  }
   //   // String hour;
   //   // String minute;
   //   // String second;
