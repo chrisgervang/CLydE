@@ -2,7 +2,7 @@ var state = 0;
 var textArr = {title: 'Canoe', body: 'Boat', body: 'Ship', body: state};
 simply.text(textArr);
 
-function changeState(x) {
+var changeState = function(x) {
   state = state + x;
   if (state === 0){
     textArr = {title: 'Canoe', body: 'Boat', body: 'Ship', body: state};
