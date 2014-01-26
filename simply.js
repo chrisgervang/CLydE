@@ -31,14 +31,6 @@ simply.on('singleClick', function(e) {
         home = 1;
         textArr = {title: 'Curtains', body: 'Toggle curtains'};
         simply.text(textArr);
-          if ((e.button === 'select') && (home === 1)) {
-            simply.subtext((curtains+1)%2);
-          }
-          if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) {
-            state = 2;
-            simply.text(textArr);
-            home = 0;
-          }
         };
       if (state === 2) {
         textArr = {title: 'Lights', subtitle: ' ', body: 'Toggle lights'};
@@ -49,6 +41,14 @@ simply.on('singleClick', function(e) {
         simply.text(textArr);
       }
     }
+  if ((e.button === 'select') && (home === 1)) {
+      simply.subtext((curtains+1)%2);
+  }
+  if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) {
+    state = 2;
+    simply.text(textArr);
+    home = 0;
+  }
 });
 
 /*
