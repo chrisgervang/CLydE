@@ -1,5 +1,5 @@
 var state = 1;
-var curtains = 0:
+var curtains = 0;
 var textArr = {title: 'Curtains', subtitle: 'Backlight', body: 'Light'};
 simply.text(textArr);
 simply.style(type = 'large');
