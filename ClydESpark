@@ -30,6 +30,7 @@ byte timeServer[] = {50, 63, 202, 26};
 String getValue(String data, char separator, int index);
 int motorOn(String args);
 int fade(String args);
+int setFade(String args);
 void setup();
 void getTime(String &hour, String &minute, String &second);
 int hitSwitch();
@@ -86,7 +87,7 @@ int fade(String args){
         delay(fadeTimeI);                            
       }
       return 1;
-    } else if (dimPercentLight < percentI) {
+    } else if (dimPercentLight > percentI) {
          for(int fadeValue = dimPercentLight ; fadeValue >= 0; fadeValue -=1) { 
         // sets the value (range from 0 to 255):
         analogWrite(LEDSTRIP, fadeValue);         
@@ -94,6 +95,23 @@ int fade(String args){
         delay(fadeTimeI); 
          }
          return 1;
+    }
+    return -1;
+}
+
+int setFade(String args){
+    String percent = getValue(args, ',', 0);
+    String id = getValue(args, ',', 1);
+    int percentI = percent.toInt();
+
+    if (id == "A"){
+        if (dimPercentLight != percentI){
+            analogWrite(LEDSTRIP, percentI);
+        }
+      return 1;
+    } else { //id == "B"
+        //Setting light
+      return 1;
     }
     return -1;
 }
@@ -138,6 +156,7 @@ void setup(){
 
     Spark.function("motorOn", motorOn);
     Spark.function("fade", fade);
+    Spark.function("setFade", setFade);
   Spark.variable("motorState", &motorState, INT);
   Spark.variable("switchState", &switchState, INT);
   Spark.variable("motionState", &motionState, INT);
