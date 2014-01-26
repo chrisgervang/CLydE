@@ -1,6 +1,6 @@
 var state = 1;
 var curtains = 0;
-var home = 1;
+var home = 0;
 var textArr = {title: 'Curtains', subtitle: 'Backlight', body: 'Light'};
 simply.text(textArr);
 simply.style(type = 'large');
@@ -20,26 +20,25 @@ var changeState = function(x) {
   };
 
 simply.on('singleClick', function(e) {
-  if (e.button === 'up') {
+  if ((e.button === 'up') && (home === 0)) {
     changeState(1);
     } 
-  if (e.button === 'down') {
+  if ((e.button === 'down') && (home === 0)){
       changeState(0);
     }
-  if (e.button === 'select') {
-      home = 0;
-      while (home === 0) {
+  if ((e.button === 'select') && (home === 0))  {
       if (state === 1) {
+        home = 1;
         textArr = {title: 'Curtains', subtitle: ' ', body: 'Toggle curtains'};
         simply.text(textArr);
         simply.on('singleClick', function(g) {
-          if (g.button === 'select') {
+          if ((g.button === 'select') && (home === 1)) {
             simply.subtext((curtains+1)%2);
           }
-          if ((g.button === 'up') || (g.button === 'down')) {
+          if (((g.button === 'up') && (home === 1)) || ((g.button === 'down') && (home === 1))) {
             state = 2;
             simply.text(textArr);
-            home = 1;
+            home = 0;
           }
         });
       }
@@ -50,7 +49,6 @@ simply.on('singleClick', function(e) {
       if (state === 3) {
         textArr = {title: 'Backlight', subtitle: ' ', body: 'Toggle backlight'};
         simply.text(textArr);
-      }
       }
     }
 });
