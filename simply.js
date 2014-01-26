@@ -1,3 +1,9 @@
+text(title: 'Options', subtitle: 'Boat', body: 'Ship')
+simply.scrollable(true);
+
+
+
+/*
 var count = parseInt(localStorage.getItem('count')) || 0;
 var interval;
 
@@ -28,3 +34,4 @@ simply.on('longClick', function(e) {
 });
 
 simply.text({ title: 'Counter', subtitle: count });
+*/
