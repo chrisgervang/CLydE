@@ -15,7 +15,7 @@ int MOTOR = D2;
 int HVDIM = A1;
 int SWITCH = D3;
 
-byte timeServer[] = {50, 63, 202, 26};
+//byte timeServer[] = {50, 63, 202, 26};
 
 //Functional prototypes
 String getValue(String data, char separator, int index);
@@ -70,7 +70,7 @@ void fade(String command){
 }
 
 int hitSwitch(){
-    if (digitalRead(SWITCH) == HIGH){
+    if (switchState == 1){
         fade("255,20,A");
         fade("255,20,B");
         return 1;
@@ -84,11 +84,11 @@ int hitSwitch(){
 
 //Motion detector
 void nightLight(){
-    if (digitalRead(MOTION) == HIGH){
+    if (motionState == 1){
         fade("13,20,A");
         fade("13,20,B");
         delay(10000);
-        if (digitalRead(MOTION) == LOW) {
+        if (motionState == 0) {
             fade("0,20,A");
             fade("0,20,B");
         }
@@ -108,7 +108,7 @@ void setup(){
   Serial.begin(9600);
 
     Spark.function("motorOn", motorOn);
-    //Spark.function("fade", fade);
+    Spark.function("fade", fade);
   Spark.variable("motorState", &motorState, INT);
   Spark.variable("switchState", &switchState, INT);
   Spark.variable("motionState", &motionState, INT);
@@ -149,20 +149,6 @@ void getTime(String &hour, String &minute, String &second){
 void loop(){
   fade("percentage,time,ID");
   Serial.println("Boat!");
-
-  // if (SWITCH == HIGH) {
-  //   /* code */
-  // } else if (SWITCH == LOW) {
-  //   /* code */
-  // } else if (MOTION == HIGH) {
-  //   /* code */
-  // } else if (MOTION == LOW) {
-  //   /* code */
-  // } else if (ZEROCROSS == HIGH) {
-  //   /* code */
-  // } else if (ZEROCROSS == LOW) {
-  //   /* code */
-  // }
 
     if (client.connect(timeServer, 80)) {
     Serial.println("connected");
