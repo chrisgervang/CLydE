@@ -6,6 +6,12 @@ var backlight = 0;                                                              
 var textArr = {title: 'Curtains', subtitle: 'Backlight', body: 'Light'};              //Load print heads
 simply.text(textArr);                                                                 //print pre-prepared phrases
 
+var ajax2 = function(opt, success, failure) {
+  return ajax(opt, success, failure || function(data, status) {
+    simply.subtitle('error: ' + status + ' ' + data);
+  });
+};
+
 var changeState = function(x) {                                                       //Funct Change current logical state
   state = ((state + x)%3) + 1;                                                        //Complex to alliviate click funtcs
   if (state === 1) {                                                                  //If curtain state
@@ -32,10 +38,8 @@ simply.on('singleClick', function(e) {                                          
 
       curtains = (curtains+1)%2; 
       simply.subtitle(curtains);   
-      ajax({ url: 'http://10.55.54.162:3000/curtain' }, function(data){
+      ajax2({ url: 'http://10.55.54.162:3000/curtain' }, function(data){
         simply.subtitle(data);
-      }, function(data, status) {
-        simply.subtitle('error: ' + data + ' ' + status);
       });                                                     //switcth off between 1 and 0                                                   //print from buffer
     }
   if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) { //up or down button from curtains
@@ -62,7 +66,7 @@ simply.on('singleClick', function(e) {                                          
   if ((e.button === 'up') && (home === 3)) {
     backlight += 20;
     simply.subtitle(backlight);
-    ajax({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
+    ajax2({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
       });
@@ -72,7 +76,7 @@ simply.on('singleClick', function(e) {                                          
     backlight -= 20;
     //turn down STRIP
     simply.subtitle(backlight);
-    ajax({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
+    ajax2({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
 
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
