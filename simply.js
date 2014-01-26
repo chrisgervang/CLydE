@@ -1,7 +1,7 @@
 var state = 1;
 var textArr = {title: 'Canoe', subtitle: 'Boat', body: 'Ship'};
 simply.text(textArr);
-simply.style(large);
+simply.style(type = 'large');
 
 var changeState = function(x) {
   state = (state + x)%3;
