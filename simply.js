@@ -42,7 +42,8 @@ simply.on('singleClick', function(e) {
       }
     }
   if ((e.button === 'select') && (home === 1)) {
-      simply.subtitle((curtains+1)%2);
+      curtains = (curtains+1)%2;
+      simply.subtitle(curtains);
   }
   if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) {
     state = 2;
