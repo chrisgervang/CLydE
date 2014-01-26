@@ -1,6 +1,8 @@
 var state = 1;
-var curtains = 0;
 var home = 0;
+var curtains = 0;
+var lights = 0;
+var backlight = 0;
 var textArr = {title: 'Curtains', subtitle: 'Backlight', body: 'Light'};
 simply.text(textArr);
 simply.style(type = 'large');
@@ -33,20 +35,51 @@ simply.on('singleClick', function(e) {
         simply.text(textArr);
         }
       if (state === 2) {
+        home = 2;
         textArr = {title: 'Lights', subtitle: ' ', body: 'Toggle lights'};
         simply.text(textArr);
       }
       if (state === 3) {
+        home = 3;
         textArr = {title: 'Backlight', subtitle: ' ', body: 'Toggle backlight'};
         simply.text(textArr);
       }
     }
+    
   if ((e.button === 'select') && (home === 1)) {
       curtains = (curtains+1)%2;
       simply.subtitle(curtains);
   }
   if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) {
+    state = 1;
+    simply.subtitle(textArr);
+    home = 0;
+  }
+
+  if ((e.button === 'up') && (home === 2)) {
+    simply.subtitle(++lights);
+    clearInterval(interval);
+  }
+  if ((e.button === 'down') && (home === 2)) {
+    simply.subtitle(--lights);
+    clearInterval(interval);
+  }
+  if ((e.button === 'select') && (home === 2)) {
     state = 2;
+    simply.subtitle(textArr);
+    home = 0;
+  }
+  
+  if ((e.button === 'up') && (home === 3)) {
+    simply.subtitle(++backlight);
+    clearInterval(interval);
+  }
+  if ((e.button === 'down') && (home === 3)) {
+    simply.subtitle(--backlight);
+    clearInterval(interval);
+  }
+  if ((e.button === 'select') && (home === 3)) {
+    state = 3;
     simply.subtitle(textArr);
     home = 0;
   }
