@@ -65,7 +65,7 @@ define(['jquery', 'jquery-ui', 'text!views/dashboard.htm', 'less!views/dashboard
 				}
         	});
 
-        	$('.blinds').on('click', function(){
+        	
             
 
             $.get("http://10.55.54.162:3000/curtain", function( data ) {
@@ -96,11 +96,20 @@ define(['jquery', 'jquery-ui', 'text!views/dashboard.htm', 'less!views/dashboard
                  console.log( "light on" );
              });
             }
+          }
 
-            $.get("http://10.55.54.162:3000/dimLights?params=0,20,A", function( data ) {
+          $('.blinds').on('click', function(){
+            $.get("http://10.55.54.162:3000/curtain", function( data ) {
               //$( ".result" ).html( data );
               console.log( "CURTAIN" );
             });
+
+// $.ajax({
+//   url: "http://10.55.54.162:3000/curtain",
+//   data: data,
+//   success: success,
+//   dataType: string
+// });
         		$(this).toggleClass('on').toggleClass('off');
         	});
 

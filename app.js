@@ -152,25 +152,29 @@ function wake() {
 		if(error !== null) {
 		    console.log('exec error: ' + error);
 		}
+
+		var command = 'curl --data "args=255,500,A" https://api.spark.io/v1/devices/48ff6e065067555050192387/fade?access_token=427016082e1adc9172f7e6c32e810a26bcc6ebd8';
+		child = exec(command, function(error, stdout, stderr){
+			console.log('stdout: ' + stdout);
+			console.log('stderr: ' + stderr);
+			if(error !== null) {
+			    console.log('exec error: ' + error);
+			}
+		});
+
+		var commandtwo = 'curl --data "motorOn" https://api.spark.io/v1/devices/48ff6e065067555050192387/motorOn?access_token=427016082e1adc9172f7e6c32e810a26bcc6ebd8';
+			child = exec(commandtwo, function(error, stdout, stderr){
+			console.log('stdout: ' + stdout);
+			console.log('stderr: ' + stderr);
+			if(error !== null) {
+			    console.log('exec error: ' + error);
+			}
+		});
 	});
 
-	var command = 'curl --data "args=255,500,A" https://api.spark.io/v1/devices/48ff6e065067555050192387/fade?access_token=427016082e1adc9172f7e6c32e810a26bcc6ebd8';
-	child = exec(command, function(error, stdout, stderr){
-		console.log('stdout: ' + stdout);
-		console.log('stderr: ' + stderr);
-		if(error !== null) {
-		    console.log('exec error: ' + error);
-		}
-	});
+	
 
-	var commandtwo = 'curl --data "motorOn" https://api.spark.io/v1/devices/48ff6e065067555050192387/motorOn?access_token=427016082e1adc9172f7e6c32e810a26bcc6ebd8';
-	child = exec(commandtwo, function(error, stdout, stderr){
-		console.log('stdout: ' + stdout);
-		console.log('stderr: ' + stderr);
-		if(error !== null) {
-		    console.log('exec error: ' + error);
-		}
-	});
+	
 
 }
 
