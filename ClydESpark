@@ -1,21 +1,312 @@
-String = "http://www.timeapi.org/"
-//setup
-if (client.connect(server, 80)) {
-	Serial.println("connected");
-	client.println("GET utc/now?\H:\M:\S");
-	client.println();
-} 
-else {
-	Serial.println("connection failed");
-}
-//loop
-if (client.available()) {
-	char c = client.read();
-	Serial.print(c);
+
+//TODO:
+//finish fade
+//write setLightLevel
+//test evrything :D
+//dot i cross t
+
+// #include <TimerOne.h>                    
+
+TCPClient client;
+
+//State variables
+
+int zeroCrossState = 0;
+int motorState = 0;
+int switchState = 0;
+int motionState = 0;
+int dimPercentLight = 0; //(0-128) 0 is on, 128 is off
+int dimPercentLED = 0; //(0-255) 0 is off, 255 is on
+
+int switchOn;
+
+//Pins
+int LEDSTRIP = A0;
+int ZEROCROSS = D1;
+int MOTION = D0;
+int MOTOR = D2;
+int HVDIM = A1;
+int SWITCH = D4;
+
+byte timeServer[] = {50, 63, 202, 26};
+
+//ZeroCross Tail light
+volatile int i=0;               // Variable to use as a counter
+volatile boolean zero_cross=0;  // Boolean to store a "switch" to tell us if we have crossed zero
+int PSSR1 = 4;                  // PowerSSR Tail connected to digital pin 4
+int dim = 32;                   // Default dimming level (0-128)  0 = on, 128 = off
+int freqStep = 60;              // Set to 60hz mains
+int LED = 0;                    // LED on Arduino board on digital pin 13
+
+//Functional prototypes
+String getValue(String data, char separator, int index);
+int motorOn(String args);
+int fade(String args);
+int setFade(String args);
+void setup();
+void getTime(String &hour, String &minute, String &second);
+int hitSwitch();
+void nightLight();
+void loop();
+void dim_check();
+void zero_cross_detect();
+
+String getValue(String data, char separator, int index) {
+  int found = 0;
+  int strIndex[] = {0, -1};
+  int maxIndex = data.length()-1;
+
+  for(int i=0; i<=maxIndex && found<=index; i++){
+    if(data.charAt(i) == separator || i == maxIndex){
+        found++;
+        strIndex[0] = strIndex[1]+1;
+        strIndex[1] = (i == maxIndex) ? i+1 : i;
+    }
+  }
+
+  return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
-if (!client.connected()) {
-	Serial.println();
-	Serial.println("disconnecting.");
-	client.stop();
+
+
+int motorOn(String args) {
+    if (args = "motorOn"){
+        digitalWrite(MOTOR, HIGH);
+        delay(5000);
+        digitalWrite(MOTOR, LOW);
+          
+        if (motorState == 0) {
+            motorState = 1;
+        } else {
+            motorState = 0;
+        }
+        return 1;
+    }
+    return -1;
+
 }
+
+int fade(String args){
+    String percent = getValue(args, ',', 0);
+    String fadeTime = getValue(args, ',', 1);
+    String id = getValue(args, ',', 2);
+    //Serial.println(percent + " " + fadeTime + " " + id);
+    int percentI = percent.toInt();
+    int fadeTimeI = fadeTime.toInt();
+
+    if (id == "A") { //LED
+      if(dimPercentLED < percentI) {
+          for(int fadeValue = dimPercentLED ; fadeValue <= percentI; fadeValue +=5) { 
+          // sets the value (range from 0 to 255):
+          analogWrite(LEDSTRIP, fadeValue);         
+          // wait for 30 milliseconds to see the dimming effect    
+          delay(fadeTimeI);
+          dimPercentLED = fadeValue;
+        }
+        return 1;
+      } else if (dimPercentLED > percentI) {
+          for(int fadeValue = dimPercentLED ; fadeValue >= percentI; fadeValue -=5) { 
+            // sets the value (range from 0 to 255):
+            analogWrite(LEDSTRIP, fadeValue);         
+            // wait for 30 milliseconds to see the dimming effect    
+            delay(fadeTimeI); 
+            dimPercentLED = fadeValue;
+          }
+          return 1;
+      }
+    } else { //ZCT
+      if (dimPercentLight < percentI){
+        for (int fadeValue = dimPercentLight; fadeValue <= percentI; fadeValue+=5){
+        // sets the value (range from 0 to 128):          
+        dim = fadeValue;
+        // wait for 30 milliseconds to see the dimming effect    
+        delay(fadeTimeI);
+        dimPercentLight = fadeValue;
+        }
+        return 1;
+      } else if (dimPercentLight > percentI){
+        for(int fadeValue = dimPercentLight; fadeValue >= percentI; fadeValue+=5){
+          // sets the value (range from 0 to 128):          
+          dim = fadeValue;
+          // wait for 30 milliseconds to see the dimming effect    
+          delay(fadeTimeI);
+          dimPercentLED = fadeValue;
+        }
+        return 1;
+      }
+    }
+    return -1;
+}
+
+int setFade(String args){
+    String percent = getValue(args, ',', 0); //0-255 for LED; 0-128 for ZCT
+    String id = getValue(args, ',', 1);
+    int percentI = percent.toInt();
+
+    if (id == "A"){
+      analogWrite(LEDSTRIP, percentI);
+      return 1;
+    } else { //id == "B"
+      dim = percentI;
+      return 1;
+    }
+    return -1;
+}
+
+int hitSwitch(){
+    Serial.println("HIT");
+    // if (switchState == 1){
+    //     fade("255,20,A");
+    //     fade("255,20,B");
+    //     return 1;
+    // } else {
+    //     fade("0,20,A");
+    //     fade("0,20,B");
+    //     return 0;
+    //}
+    
+}
+
+//Motion detector
+void nightLight(){
+    if (motionState == 1){
+        fade("13,20,A");
+        fade("13,20,B");
+        delay(10000);
+        if (motionState == 0) {
+            fade("0,20,A");
+            fade("0,20,B");
+        }
+    }
+}
+
+
+///////////////////////////////////////////SETUP////////////
+void setup(){
+  delay(5000);
+  pinMode(LEDSTRIP, OUTPUT);
+  pinMode(ZEROCROSS, INPUT);
+  pinMode(MOTION, INPUT);
+  pinMode(MOTOR, OUTPUT);
+  pinMode(HVDIM, INPUT);
+  pinMode(SWITCH, INPUT);
+  Serial.begin(9600);
+
+  Spark.function("motorOn", motorOn);
+  Spark.function("fade", fade);
+  Spark.function("setFade", setFade);
+  
+  Spark.variable("motorState", &motorState, INT);
+  Spark.variable("switchState", &switchState, INT);
+  Spark.variable("motionState", &motionState, INT);
+  Spark.variable("dimPercentLight", &dimPercentLight, INT);
+  Spark.variable("dimPercentLED", &dimPercentLED, INT);
+
+  //setup
+  if (client.connect(timeServer, 80)) {
+    Serial.println("connected");
+    client.println("GET utc/now?\\H:\\M:\\S");
+    client.println();
+  }  else {
+    Serial.println("connection failed");
+  }
+
+  //ZCT
+  pinMode(LED, OUTPUT);
+  pinMode(4, OUTPUT);                // Set SSR1 pin as output
+  attachInterrupt(0, zero_cross_detect, RISING);   // Attach an Interupt to digital pin 2 (interupt 0),
+  //Timer1.initialize(freqStep);
+  //Timer1.attachInterrupt(dim_check,freqStep);
+}
+
+
+// int[] getTime(){
+//   String timeString = client.read("GET utc/now?\\H:\\M:\\S");
+// //  int[] curTime = new int[3];
+//   int curTime[3];
+//   curTime[0] = getValue(timeString, ":", 0);
+//   curTime[1] = getValue(timeString, ":", 1);
+//   curTime[2] = getValue(timeString, ":", 2);
+//   return curTime;
+// }
+
+void getTime(String &hour, String &minute, String &second){
+//  String timeString = client.read("GET utc/now?\\H:\\M:\\S");
+  String timeString = "12:04:30";
+  //int[] curTime = new int[3];
+  hour = getValue(timeString, ':', 0);
+  minute = getValue(timeString, ':', 1);
+  second = getValue(timeString, ':', 2);
+}
+
+/////////////////////////////////LOOP//////////////////
+void loop(){
+  //fade("percentage,time,ID");
+  //Serial.println("Boat!");
+    switchOn = switchState;
+
+  if (digitalRead(SWITCH) == HIGH) {
+    switchState = true;
+  } else if (digitalRead(SWITCH) == LOW) {
+    switchState = false;
+  } else if (digitalRead(MOTION) == HIGH) {
+    motionState = true;
+  } else if (digitalRead(MOTION) == LOW) {
+    motionState = false;
+  } else if (digitalRead(ZEROCROSS) == HIGH) {
+    zeroCrossState = true;
+  } else if (digitalRead(ZEROCROSS) == LOW) {
+    zeroCrossState = false;
+  }
+  //   if (client.connect(timeServer, 80)) {
+  //   Serial.println("connected");
+  //   motorOn("motorOn");
+  Serial.println(switchState);
+   if (switchState != switchOn){
+       hitSwitch();
+   }
+  //   // String hour;
+  //   // String minute;
+  //   // String second;
+  //   // getTime(hour, minute, second);
+  //   // Serial.println(hour + " " +  minute + " " + second);
+    
+  //   //client.println("GET utc/now?\\H:\\M:\\S");
+  // }  else {
+  //   Serial.println("connection failed");
+
+  // }
+}
+
+void dim_check() {                  // This function will fire the triac at the proper time
+ if(zero_cross == 1) {              // First check to make sure the zero-cross has happened else do nothing
+   if(i>=dim) {
+    delayMicroseconds(100);        //These values will fire the PSSR Tail.
+    digitalWrite(PSSR1, HIGH);
+    delayMicroseconds(50);
+    digitalWrite(PSSR1, LOW); 
+     i = 0;                         // Reset the accumulator
+     zero_cross = 0;                // Reset the zero_cross so it may be turned on again at the next zero_cross_detect    
+   } else {
+     i++;                           // If the dimming value has not been reached, increment the counter
+   }                                // End dim check
+ }                                  // End zero_cross check
+}
+
+void zero_cross_detect() {
+   zero_cross = 1;
+   // set the boolean to true to tell our dimming function that a zero cross has occured
+} 
+
+
+// //loop
+// if (client.available()) {
+//   char c = client.read();
+//   Serial.print(c);
+// }
+
+// if (!client.connected()) {
+//   Serial.println();
+//   Serial.println("disconnecting.");
+//   client.stop();
+// }
