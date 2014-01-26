@@ -1,10 +1,13 @@
+TCPClient client;
+
 //State variables
-int motorState;
-int switchState;
-int motionState;
-int dimPercentLight;
-int dimPercentLED;
-int zeroCrossState;
+
+int zeroCrossState = 0;
+int motorState = 0;
+int switchState = 0;
+int motionState = 0;
+int dimPercentLight = 0;
+int dimPercentLED = 0;
 
 //Pins
 int LEDSTRIP = A0;
@@ -14,7 +17,15 @@ int MOTOR = D2;
 int HVDIM = A1;
 int SWITCH = D3;
 
-String timeServer = "http://www.timeapi.org/";
+byte timeServer[] = {50, 63, 202, 26};
+
+//Functional prototypes
+String getValue(String data, char separator, int index);
+void motorOn();
+void fade(String command);
+void setup();
+void getTime(String &hour, String &minute, String &second);
+void loop();
 
 String getValue(String data, char separator, int index) {
   int found = 0;
@@ -22,7 +33,7 @@ String getValue(String data, char separator, int index) {
   int maxIndex = data.length()-1;
 
   for(int i=0; i<=maxIndex && found<=index; i++){
-    if(data.charAt(i)==separator || i==maxIndex){
+    if(data.charAt(i) == separator || i == maxIndex){
         found++;
         strIndex[0] = strIndex[1]+1;
         strIndex[1] = (i == maxIndex) ? i+1 : i;
@@ -32,22 +43,34 @@ String getValue(String data, char separator, int index) {
   return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
-int[] getTime() {
-  String timeString = client.read("GET utc/now?\H:\M:\S");
-  String
+
+
+int motorOn(String command) {
+    if (command = "motorOn"){
+        digitalWrite(MOTOR, HIGH);
+        delay(5000);
+        digitalWrite(MOTOR, LOW);
+          
+        if (motorState == 0) {
+            motorState = 1;
+        } else {
+            motorState = 0;
+        }
+        return 1;
+    }
+    return -1;
+
 }
 
-void motorOn() {
-  digitalWrite(MOTOR, HIGH);
-  delay(5000);
-  digitalWrite(MOTOR, LOW);
-  
-  if (motorState == false) {
-    motorState = true;
-  } else {
-    motorState = false;
-  }
-
+void hitSwitch(){
+    if (digitalRead(SWITCH) == HIGH){
+        fade("255,20,A");
+        fade("255,20,B");
+    } else {
+        fade("0,20,A");
+        fade("0,20,B");
+    }
+    
 }
 
 void fade(String command){
@@ -60,29 +83,51 @@ void fade(String command){
 
 ///////////////////////////////////////////SETUP////////////
 void setup(){
-	pinMode(LEDSTRIP, OUTPUT);
-	pinMode(ZEROCROSS, INPUT);
-	pinMode(MOTION, INPUT);
-	pinMode(MOTOR, OUTPUT);
-	pinMode(HVDIM, INPUT);
-	pinMode(SWITCH, INPUT);
+    delay(5000);
+  pinMode(LEDSTRIP, OUTPUT);
+  pinMode(ZEROCROSS, INPUT);
+  pinMode(MOTION, INPUT);
+  pinMode(MOTOR, OUTPUT);
+  pinMode(HVDIM, INPUT);
+  pinMode(SWITCH, INPUT);
   Serial.begin(9600);
 
-  //	Spark.function("fade", fade);
-	Spark.variable("motorState", &motorState, INT);
-	Spark.variable("switchState", &switchState, INT);
-	Spark.variable("motionState", &motionState, INT);
-	Spark.variable("dimPercentLight", &dimPercentLight, INT);
-	Spark.variable("dimPercentLED", &dimPercentLED, INT);
+    Spark.function("motorOn", motorOn);
+    //Spark.function("fade", fade);
+  Spark.variable("motorState", &motorState, INT);
+  Spark.variable("switchState", &switchState, INT);
+  Spark.variable("motionState", &motionState, INT);
+  Spark.variable("dimPercentLight", &dimPercentLight, INT);
+  Spark.variable("dimPercentLED", &dimPercentLED, INT);
 
   //setup
   if (client.connect(timeServer, 80)) {
     Serial.println("connected");
-    client.println("GET utc/now?\H:\M:\S");
+    client.println("GET utc/now?\\H:\\M:\\S");
     client.println();
   }  else {
     Serial.println("connection failed");
   }
+}
+
+
+// int[] getTime(){
+//   String timeString = client.read("GET utc/now?\\H:\\M:\\S");
+// //  int[] curTime = new int[3];
+//   int curTime[3];
+//   curTime[0] = getValue(timeString, ":", 0);
+//   curTime[1] = getValue(timeString, ":", 1);
+//   curTime[2] = getValue(timeString, ":", 2);
+//   return curTime;
+// }
+
+void getTime(String &hour, String &minute, String &second){
+//  String timeString = client.read("GET utc/now?\\H:\\M:\\S");
+  String timeString = "12:04:30";
+  //int[] curTime = new int[3];
+  hour = getValue(timeString, ':', 0);
+  minute = getValue(timeString, ':', 1);
+  second = getValue(timeString, ':', 2);
 }
 
 /////////////////////////////////LOOP//////////////////
@@ -102,29 +147,34 @@ void loop(){
     zeroCrossState = true;
   } else if (digitalRead(ZEROCROSS) == LOW) {
     zeroCrossState = false;
-  }
+
+  //   if (client.connect(timeServer, 80)) {
+  //   Serial.println("connected");
+  //   motorOn("motorOn");
+  //   hitSwitch();
+  //   // String hour;
+  //   // String minute;
+  //   // String second;
+  //   // getTime(hour, minute, second);
+  //   // Serial.println(hour + " " +  minute + " " + second);
+    
+  //   //client.println("GET utc/now?\\H:\\M:\\S");
+  // }  else {
+  //   Serial.println("connection failed");
+
+  // }
 }
 
 
 
+// //loop
+// if (client.available()) {
+//   char c = client.read();
+//   Serial.print(c);
+// }
 
-
-//loop
-if (client.available()) {
-  char c = client.read();
-  Serial.print(c);
-}
-
-if (!client.connected()) {
-  Serial.println();
-  Serial.println("disconnecting.");
-  client.stop();
-}
-
-
-
-
-
-
-
-
+// if (!client.connected()) {
+//   Serial.println();
+//   Serial.println("disconnecting.");
+//   client.stop();
+// }
