@@ -5,10 +5,10 @@ simply.style(type = 'large');
 
 var changeState = function(x) {
   state = ((state + x)%3) + 1;
-  if (state === 3) {
+  if (state === 2) {
     textArr = {title: 'Ship', subtitle: 'Boat', body: 'Canoe'};
      }
-  if (state === 2) {
+  if (state === 3) {
       textArr = {title: 'Boat', subtitle: 'Canoe', body: 'Ship'};
      }
   if (state === 1) {
