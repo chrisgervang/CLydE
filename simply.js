@@ -30,7 +30,7 @@ simply.on('singleClick', function(e) {                                          
   if ((e.button === 'select') && (home === 1)) {                                      //If select pressed from curtain state
       //toggle curtains
       ajax({ url: 'http://10.55.54.162:3000/curtain' }, function(data){
-        //simply.subtitle(data.return_value);
+        simply.subtitle(data.return_value);
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
       });
@@ -47,11 +47,6 @@ simply.on('singleClick', function(e) {                                          
   if ((e.button === 'up') && (home === 2)) {                                          //If up from lights
     //turn up BULB
     simply.subtitle(++lights);                                                        //disp precentage for lights
-    // ajax({ url: 'http://10.55.54.162:3000/wake' }, function(data){
-    //     //simply.subtitle(lights);
-    //     // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
-    //     // simply.title(headline);
-    //   });
     }       
   if ((e.button === 'down') && (home === 2)) {                                     //if down from lights
     //turn down BULB
@@ -68,17 +63,17 @@ simply.on('singleClick', function(e) {                                          
     backlight += 10;
 
     ajax({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
-        simply.subtitle(backlight);
+        simply.subtitle(data.return_value + " " + backlight);
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
       });
     //turn up STRIP
     }
   if ((e.button === 'down') && (home === 3)) {
-    backlight -= 10;
+    backlight -= 10);
     //turn down STRIP
     ajax({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
-        simply.subtitle(backlight);
+        simply.subtitle(data.return_value + " " + backlight);
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
       });
