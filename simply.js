@@ -32,7 +32,7 @@ simply.on('singleClick', function(e) {                                          
 
       curtains = (curtains+1)%2; 
       simply.subtitle(curtains);   
-      ajax({ url: '10.55.54.162:3000/curtain' }, function(data){
+      ajax({ url: 'http://10.55.54.162:3000/curtain' }, function(data){
         simply.subtitle(data);
       }, function(data, status) {
         simply.subtitle('error: ' + data + ' ' + status);
