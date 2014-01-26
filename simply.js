@@ -42,11 +42,11 @@ simply.on('singleClick', function(e) {
       }
     }
   if ((e.button === 'select') && (home === 1)) {
-      simply.subtext((curtains+1)%2);
+      simply.subtitle((curtains+1)%2);
   }
   if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) {
     state = 2;
-    simply.text(textArr);
+    simply.subtitle(textArr);
     home = 0;
   }
 });
