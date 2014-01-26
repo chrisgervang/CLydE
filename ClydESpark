@@ -5,7 +5,7 @@
 //test evrything :D
 //dot i cross t
 
-#include <TimerOne.h>                    
+//#include <TimerOne.h>                    
 
 TCPClient client;
 
@@ -141,7 +141,7 @@ int setFade(String args){
       analogWrite(LEDSTRIP, percentI);
       return 1;
     } else { //id == "B"
-      dim = percent;
+      dim = percentI;
       return 1;
     }
     return -1;
@@ -253,7 +253,7 @@ void loop(){
   //   if (client.connect(timeServer, 80)) {
   //   Serial.println("connected");
   //   motorOn("motorOn");
-  //   hitSwitch();sssss
+  //   hitSwitch();
   //   // String hour;
   //   // String minute;
   //   // String second;
