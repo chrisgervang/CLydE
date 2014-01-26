@@ -29,7 +29,7 @@ simply.on('singleClick', function(e) {
   if ((e.button === 'select') && (home === 0)) {
       if (state === 1) {
         home = 1;
-        textArr = {title: 'Curtains', subtitle: , body: 'Toggle curtains'};
+        textArr = {title: 'Curtains', subtitle: ' ', body: 'Toggle curtains'};
         simply.text(textArr);
         };
       if (state === 2) {
