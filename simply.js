@@ -31,7 +31,7 @@ simply.on('singleClick', function(e) {
         home = 1;
         textArr = {title: 'Curtains', subtitle: ' ', body: 'Toggle curtains'};
         simply.text(textArr);
-        };
+        }
       if (state === 2) {
         textArr = {title: 'Lights', subtitle: ' ', body: 'Toggle lights'};
         simply.text(textArr);
