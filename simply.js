@@ -62,7 +62,7 @@ simply.on('singleClick', function(e) {                                          
   if ((e.button === 'up') && (home === 3)) {
     backlight += 20;
     simply.subtitle(backlight);
-    ajax({ url: '10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
+    ajax({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
       });
@@ -72,7 +72,7 @@ simply.on('singleClick', function(e) {                                          
     backlight -= 20;
     //turn down STRIP
     simply.subtitle(backlight);
-    ajax({ url: '10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
+    ajax({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
 
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
