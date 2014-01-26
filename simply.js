@@ -1,4 +1,4 @@
-var textArr = {title: 'Options', subtitle: 'Boat', body: 'Ship'};
+var textArr = {title: 'Options', subtitle: 'Boat', subtitle: 'Ship', subtitle: 'Canoe'};
 simply.text(textArr)
 simply.scrollable(true);
 
