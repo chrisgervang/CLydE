@@ -3,12 +3,13 @@ var state = 0;
 
 function changeState(x) {
   state = state + x;
-  if (state === 0)
+  if (state === 0){
     textArr = {title: 'Canoe', body: 'Boat', body: 'Ship'};
-    else if (state === 1)
+   } else if (state === 1) {
       textArr = {body: 'Canoe', title: 'Boat', body: 'Ship'};
-      else if (state === 2)
+     } else if (state === 2) {
         textArr = {body: 'Canoe', body: 'Boat', title: 'Ship'};
+     }
   simply.text(textArr);
   };
 
