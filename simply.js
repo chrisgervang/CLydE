@@ -4,7 +4,7 @@ simply.text(textArr);
 simply.style(type = 'large');
 
 var changeState = function(x) {
-  state = (state + x)%3;
+  state = ((state + x)%3) + 1;
   if (state === 3) {
     textArr = {title: 'Ship', subtitle: 'Boat', body: 'Canoe'};
      }
@@ -19,10 +19,10 @@ var changeState = function(x) {
 
 simply.on('singleClick', function(e) {
   if (e.button === 'up') {
-    changeState(2);
+    changeState(1);
     } 
   if (e.button === 'down') {
-      changeState(1);
+      changeState(0));
     }
   if (e.button === 'select') {
       
