@@ -101,9 +101,9 @@ app.get('/dimLights', function(request, response){
   		speak("Hold on a second while I set the mood. Dimming the lights to " + config[0]);
 	} else if (config[0] > lightDim) {
 		//
-		speak("Hold on a second while I set the mood. Dimming the lights to " + config[0]);
+		speak("Hold on a second while I set the mood. Raising the lights to " + config[0]);
 	}
-	//speak("POPOPPOPOPOPOPOP");
+	
 	var command = 'curl --data "args='+ request.query['params'] +'" https://api.spark.io/v1/devices/48ff6e065067555050192387/fade?access_token=427016082e1adc9172f7e6c32e810a26bcc6ebd8';
 	child = exec(command, function(error, stdout, stderr){
 		console.log('stdout: ' + stdout);
@@ -114,6 +114,20 @@ app.get('/dimLights', function(request, response){
 	});
 });
 
+app.get('/wake', function(request, response){
+	response.send("waking up");
+
+	// //255,20,A <-request
+	// var config = request.query['params'].split(',');
+	// console.log(config);
+
+
+	speak('Goodmorning Chris. It\'s Sunday January 26th and It\'s time to get out of bed. Your first event today is at nine AM with Ryan Atallah');
+	
+	wake();
+	
+});
+
 
 function speak(words) {	
 
@@ -121,6 +135,36 @@ function speak(words) {
 	console.log(words);
 
 	child = exec(command, function(error, stdout, stderr){
+		console.log('stdout: ' + stdout);
+		console.log('stderr: ' + stderr);
+		if(error !== null) {
+		    console.log('exec error: ' + error);
+		}
+	});
+
+}
+
+function wake() {
+	var command = 'osascript /Users/chrisgervang/CLydE/spotify.scpt;'
+	child = exec(command, function(error, stdout, stderr){
+		console.log('stdout: ' + stdout);
+		console.log('stderr: ' + stderr);
+		if(error !== null) {
+		    console.log('exec error: ' + error);
+		}
+	});
+
+	var command = 'curl --data "args=255,500,A" https://api.spark.io/v1/devices/48ff6e065067555050192387/fade?access_token=427016082e1adc9172f7e6c32e810a26bcc6ebd8';
+	child = exec(command, function(error, stdout, stderr){
+		console.log('stdout: ' + stdout);
+		console.log('stderr: ' + stderr);
+		if(error !== null) {
+		    console.log('exec error: ' + error);
+		}
+	});
+
+	var commandtwo = 'curl --data "motorOn" https://api.spark.io/v1/devices/48ff6e065067555050192387/motorOn?access_token=427016082e1adc9172f7e6c32e810a26bcc6ebd8';
+	child = exec(commandtwo, function(error, stdout, stderr){
 		console.log('stdout: ' + stdout);
 		console.log('stderr: ' + stderr);
 		if(error !== null) {
