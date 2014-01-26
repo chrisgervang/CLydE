@@ -36,7 +36,7 @@ simply.on('singleClick', function(e) {
           if (g.button === 'select') {
             simply.subtext((curtains+1)%2);
           }
-          if (g.button === 'up') || if (g.button === 'down') {
+          if (g.button === 'up') || (g.button === 'down') {
             state = 2;
             simply.text(textArr);
             home = 1;
