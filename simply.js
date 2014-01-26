@@ -33,9 +33,8 @@ simply.on('singleClick', function(e) {                                          
       curtains = (curtains+1)%2; 
       simply.subtitle(curtains);   
       ajax({ url: '10.55.54.162:3000/curtain' }, function(data){
-        simply.subtitle(data.return_value);
-        // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
-        // simply.title(headline);
+        simply.subtitle(data);
+        
       });                                                     //switcth off between 1 and 0                                                   //print from buffer
     }
   if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) { //up or down button from curtains
@@ -61,9 +60,8 @@ simply.on('singleClick', function(e) {                                          
   
   if ((e.button === 'up') && (home === 3)) {
     backlight += 20;
-
+    simply.subtitle(backlight);
     ajax({ url: '10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
-        simply.subtitle(backlight);
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
       });
@@ -72,8 +70,8 @@ simply.on('singleClick', function(e) {                                          
   if ((e.button === 'down') && (home === 3)) {
     backlight -= 20;
     //turn down STRIP
+    simply.subtitle(backlight);
     ajax({ url: '10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
-        simply.subtitle(backlight);
 
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
