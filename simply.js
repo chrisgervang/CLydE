@@ -1,53 +1,52 @@
-var state = 1;
-var home = 0;
-var curtains = 0;
-var lights = 0;
-var backlight = 0;
-var textArr = {title: 'Curtains', subtitle: 'Backlight', body: 'Light'};
-simply.text(textArr);
-simply.style(type = 'large');
+var state = 1;                                                                        //Logical Machine State
+var home = 0;                                                                         //Cerent_screen==Home?
+var curtains = 0;                                                                     //Whether curtains are drawn (Bool)
+var lights = 0;                                                                       //Light Brightness
+var backlight = 0;                                                                    //LedLight brightness
+var textArr = {title: 'Curtains', subtitle: 'Backlight', body: 'Light'};              //Load print heads
+simply.text(textArr);                                                                 //print pre-prepared phrases
 
-var changeState = function(x) {
-  state = ((state + x)%3) + 1;
-  if (state === 1) {
-        textArr = {title: 'Curtains', subtitle: 'Light', body: 'Backlight'};
+var changeState = function(x) {                                                       //Funct Change current logical state
+  state = ((state + x)%3) + 1;                                                        //Complex to alliviate click funtcs
+  if (state === 1) {                                                                  //If curtain state
+        textArr = {title: 'Curtains', subtitle: 'Light', body: 'Backlight'};          //show appropriate menu
+     }  
+  if (state === 2) {                                                                  //if Lights state
+    textArr = {title: 'Light', subtitle: 'Backlight', body: 'Curtains'};              //""                    ""
      }
-  if (state === 2) {
-    textArr = {title: 'Light', subtitle: 'Backlight', body: 'Curtains'};
+  if (state === 3) {                                                                  //If Led lights
+      textArr = {title: 'Backlight', subtitle: 'Curtains', body: 'Light'};            //""
      }
-  if (state === 3) {
-      textArr = {title: 'Backlight', subtitle: 'Curtains', body: 'Light'};
-     }
-  simply.text(textArr);
+  simply.text(textArr);                                                               //print from buffer
   };
 
-simply.on('singleClick', function(e) {
-  if ((e.button === 'up') && (home === 0)) {
-    changeState(1);
+simply.on('singleClick', function(e) {                                                //start listening for single clicks  
+  if ((e.button === 'up') && (home === 0)) {                                          //If up is pressed from menu
+    changeState(1);                                                                   //Find appropriate responses
     } 
-  if ((e.button === 'down') && (home === 0)) {
-      changeState(0);
+  if ((e.button === 'down') && (home === 0)) {                                        //if Button down from menu   
+      changeState(0);                                                                 //assume appropriate state
     }
-  if ((e.button === 'select') && (home === 1)) {
-      curtains = (curtains+1)%2;
-      simply.subtitle(curtains);
+  if ((e.button === 'select') && (home === 1)) {                                      //If select pressed from curtain state
+      curtains = (curtains+1)%2;                                                      //switcth off between 1 and 0
+      simply.subtitle(curtains);                                                      //print from buffer
     }
-  if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) {
-    state = 1;
-    textArr = {title: 'Curtains', subtitle: 'Light', body: 'Backlight'};
-    simply.text(textArr);
-    home = 4;
+  if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) { //up or down button from curtains
+    state = 1;                                                                        //prepare ffor curtains
+    textArr = {title: 'Curtains', subtitle: 'Light', body: 'Backlight'};              //buffer string    
+    simply.text(textArr);                                                             //print string
+    home = 4;                                                                         //enter temp state to avoid bugs
     }
-  if ((e.button === 'up') && (home === 2)) {
-    simply.subtitle(++lights);
+  if ((e.button === 'up') && (home === 2)) {                                          //If up from lights
+    simply.subtitle(++lights);                                                        //disp precentage for lights
+    }       
+  if ((e.button === 'down') && (home === 2)) {                                        //if down from lights
+    simply.subtitle(--lights);                                                        //disp percentages for limits
     }
-  if ((e.button === 'down') && (home === 2)) {
-    simply.subtitle(--lights);
-    }
-  if ((e.button === 'select') && (home === 2)) {
-    state = 2;
-    textArr = {title: 'Light', subtitle: 'Backlight', body: 'Curtains'};
-    simply.text(textArr);
+  if ((e.button === 'select') && (home === 2)) {                                      //select from lights
+    state = 2;                                                                        //load state 2
+    textArr = {title: 'Light', subtitle: 'Backlight', body: 'Curtains'};              //Back to proper menu
+    simply.text(textArr);                                                                   
     home = 4;
     }
   
