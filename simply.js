@@ -22,7 +22,7 @@ simply.on('singleClick', function(e) {
     changeState(1);
     } 
   if (e.button === 'down') {
-      changeState(0));
+      changeState(0);
     }
   if (e.button === 'select') {
       
