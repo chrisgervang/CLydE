@@ -173,15 +173,15 @@ int hitSwitch(){
 
 //Motion detector
 void nightLight(){
-    if (motionState == 1){
-        fade("13,20,A");
-        fade("13,20,B");
-        delay(10000);
-        if (motionState == 0) {
-            fade("0,20,A");
-            fade("0,20,B");
-        }
+  if (motionState == 0){
+    fade("100,20,A");
+    //fade("100,20,B");
+    delay(10000);
+    if (motionState == 1) {
+      fade("0,60,A");
+      //fade("0,60,B");
     }
+  }
 }
 
 
@@ -247,7 +247,7 @@ void getTime(String &hour, String &minute, String &second){
 void loop(){
   //fade("percentage,time,ID");
   //Serial.println("Boat!");
-    switchOn = switchState;
+    sensesMotion = motionState;
 
   if (digitalRead(SWITCH) == HIGH) {
     switchState = true;
@@ -265,14 +265,11 @@ void loop(){
   //   if (client.connect(timeServer, 80)) {
   //   Serial.println("connected");
   //   motorOn("motorOn");
-<<<<<<< HEAD
   //   hitSwitch();
-=======
-  Serial.println(switchState);
-   if (switchState != switchOn){
-       hitSwitch();
-   }
->>>>>>> 9aea976e63755ed47aabab2c544f88f3ad877a70
+  Serial.println(motionState);
+  if (motionState != sensesMotion){
+    nightLight();
+  }
   //   // String hour;
   //   // String minute;
   //   // String second;
