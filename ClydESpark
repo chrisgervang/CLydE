@@ -60,6 +60,17 @@ int motorOn(String command) {
 
 }
 
+void hitSwitch(){
+    if (digitalRead(SWITCH) == HIGH){
+        fade("255,20,A");
+        fade("255,20,B");
+    } else {
+        fade("0,20,A");
+        fade("0,20,B");
+    }
+    
+}
+
 void fade(String command){
     String percent = getValue(command, ',', 0);
     String fadeTime = getValue(command, ',', 1);
@@ -138,6 +149,7 @@ void loop(){
     if (client.connect(timeServer, 80)) {
     Serial.println("connected");
     motorOn("motorOn");
+    hitSwitch();
     // String hour;
     // String minute;
     // String second;
@@ -163,11 +175,3 @@ void loop(){
 //   Serial.println("disconnecting.");
 //   client.stop();
 // }
-
-
-
-
-
-
-
-
