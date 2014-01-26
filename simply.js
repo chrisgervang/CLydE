@@ -1,15 +1,15 @@
 var state = 0;
-var textArr = {title: 'Canoe', body: 'Boat', body: 'Ship'};
+var textArr = {title: 'Canoe', body: 'Boat', body: 'Ship', body: state};
 simply.text(textArr);
 
 function changeState(x) {
   state = state + x;
   if (state === 0){
-    textArr = {title: 'Canoe', body: 'Boat', body: 'Ship'};
+    textArr = {title: 'Canoe', body: 'Boat', body: 'Ship', body: state};
    } else if (state === 1) {
-      textArr = {body: 'Canoe', title: 'Boat', body: 'Ship'};
+      textArr = {body: 'Canoe', title: 'Boat', body: 'Ship', body: state};
      } else if (state === 2) {
-        textArr = {body: 'Canoe', body: 'Boat', title: 'Ship'};
+        textArr = {body: 'Canoe', body: 'Boat', title: 'Ship', body: state};
      }
   simply.text(textArr);
   };
