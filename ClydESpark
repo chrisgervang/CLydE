@@ -86,7 +86,7 @@ int fade(String args){
         delay(fadeTimeI);                            
       }
       return 1;
-    } else if (dimPercentLight < percentI) {
+    } else if (dimPercentLight > percentI) {
          for(int fadeValue = dimPercentLight ; fadeValue >= 0; fadeValue -=1) { 
         // sets the value (range from 0 to 255):
         analogWrite(LEDSTRIP, fadeValue);         
