@@ -1,18 +1,19 @@
 var state = 1;
-var textArr = {title: 'Canoe', subtitle: 'Boat', body: 'Ship'};
+var curtains = 0:
+var textArr = {title: 'Curtains', subtitle: 'Backlight', body: 'Light'};
 simply.text(textArr);
 simply.style(type = 'large');
 
 var changeState = function(x) {
   state = ((state + x)%3) + 1;
+  if (state === 1) {
+        textArr = {title: 'Curtains', subtitle: 'Light', body: 'Backlight'};
+     }
   if (state === 2) {
-    textArr = {title: 'Ship', subtitle: 'Boat', body: 'Canoe'};
+    textArr = {title: 'Light', subtitle: 'Backlight', body: 'Curtains'};
      }
   if (state === 3) {
-      textArr = {title: 'Boat', subtitle: 'Canoe', body: 'Ship'};
-     }
-  if (state === 1) {
-        textArr = {title: 'Canoe', subtitle: 'Ship', body: 'Boat'};
+      textArr = {title: 'Backlight', subtitle: 'Curtains', body: 'Light'};
      }
   simply.text(textArr);
   };
@@ -25,7 +26,22 @@ simply.on('singleClick', function(e) {
       changeState(0);
     }
   if (e.button === 'select') {
-      
+      if (state === 1) {
+        textArr = {title: 'Curtains', subtitle: ' ', body: 'Toggle curtains'};
+        simply.text(textArr);
+        simply.on('singleClick', function(e) {
+          if (e.button === 'select') 
+            simply.subtext((curtains+1)%2);
+        });
+      }
+      if (state === 2) {
+        textArr = {title: 'Lights', subtitle: ' ', body: 'Toggle lights'};
+        simply.text(textArr);
+      }
+      if (state === 3) {
+        textArr = {title: 'Backlight', subtitle: ' ', body: 'Toggle backlight'};
+        simply.text(textArr);
+      }
     }
 });
 
