@@ -35,6 +35,8 @@ simply.on('singleClick', function(e) {                                          
       ajax({ url: '10.55.54.162:3000/curtain' }, function(data){
         simply.subtitle(data);
         
+      }, function() {
+        simply.subtitle('error');
       });                                                     //switcth off between 1 and 0                                                   //print from buffer
     }
   if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) { //up or down button from curtains
