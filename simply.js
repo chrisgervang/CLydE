@@ -22,7 +22,7 @@ var changeState = function(x) {                                                 
 
 simply.on('singleClick', function(e) {                                                //start listening for single clicks  
   if ((e.button === 'up') && (home === 0)) {                                          //If up is pressed from menu
-      changeState(1);                                                                   //Find appropriate responses
+    changeState(1);                                                                   //Find appropriate responses
     } 
   if ((e.button === 'down') && (home === 0)) {                                        //if Button down from menu   
       changeState(0);                                                                 //assume appropriate state
