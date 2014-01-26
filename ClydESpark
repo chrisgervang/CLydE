@@ -5,12 +5,6 @@
 //test evrything :D
 //dot i cross t
 
-<<<<<<< HEAD
-//#include <TimerOne.h>                    
-=======
-// #include <TimerOne.h>                    
->>>>>>> 9aea976e63755ed47aabab2c544f88f3ad877a70
-
 TCPClient client;
 
 //State variables
@@ -21,8 +15,6 @@ int switchState = 0;
 int motionState = 0;
 int dimPercentLight = 0; //(0-128) 0 is on, 128 is off
 int dimPercentLED = 0; //(0-255) 0 is off, 255 is on
-
-int switchOn;
 
 //Pins
 int LEDSTRIP = A0;
@@ -162,7 +154,7 @@ int hitSwitch(){
     // if (switchState == 1){
     //     fade("255,20,A");
     //     fade("255,20,B");
-    //     return 1;
+    return 1;
     // } else {
     //     fade("0,20,A");
     //     fade("0,20,B");
@@ -247,7 +239,7 @@ void getTime(String &hour, String &minute, String &second){
 void loop(){
   //fade("percentage,time,ID");
   //Serial.println("Boat!");
-    sensesMotion = motionState;
+  int sensesMotion = motionState;
 
   if (digitalRead(SWITCH) == HIGH) {
     switchState = true;
