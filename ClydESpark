@@ -19,10 +19,12 @@ byte timeServer[] = {50, 63, 202, 26};
 
 //Functional prototypes
 String getValue(String data, char separator, int index);
-void motorOn();
+int motorOn(String command);
 void fade(String command);
 void setup();
 void getTime(String &hour, String &minute, String &second);
+int hitSwitch();
+void nightLight();
 void loop();
 
 String getValue(String data, char separator, int index) {
@@ -60,23 +62,39 @@ int motorOn(String command) {
 
 }
 
-void hitSwitch(){
-    if (digitalRead(SWITCH) == HIGH){
-        fade("255,20,A");
-        fade("255,20,B");
-    } else {
-        fade("0,20,A");
-        fade("0,20,B");
-    }
-    
-}
-
 void fade(String command){
     String percent = getValue(command, ',', 0);
     String fadeTime = getValue(command, ',', 1);
     String id = getValue(command, ',', 2);
     Serial.println(percent + " " + fadeTime + " " + id);
 }
+
+int hitSwitch(){
+    if (digitalRead(SWITCH) == HIGH){
+        fade("255,20,A");
+        fade("255,20,B");
+        return 1;
+    } else {
+        fade("0,20,A");
+        fade("0,20,B");
+        return 0;
+    }
+    
+}
+
+//Motion detector
+void nightLight(){
+    if (digitalRead(MOTION) == HIGH){
+        fade("13,20,A");
+        fade("13,20,B");
+        delay(10000);
+        if (digitalRead(MOTION) == LOW) {
+            fade("0,20,A");
+            fade("0,20,B");
+        }
+    }
+}
+
 
 ///////////////////////////////////////////SETUP////////////
 void setup(){
@@ -149,7 +167,9 @@ void loop(){
     if (client.connect(timeServer, 80)) {
     Serial.println("connected");
     motorOn("motorOn");
-    hitSwitch();
+    if (hitSwitch() == 0){
+        nightLight();
+    }
     // String hour;
     // String minute;
     // String second;
@@ -161,7 +181,6 @@ void loop(){
     Serial.println("connection failed");
   }
 }
-
 
 
 // //loop
