@@ -1,5 +1,6 @@
-var textArr;
 var state = 0;
+var textArr = {title: 'Canoe', body: 'Boat', body: 'Ship'};
+simply.text(textArr);
 
 function changeState(x) {
   state = state + x;
