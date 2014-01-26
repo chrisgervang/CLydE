@@ -1,7 +1,7 @@
 var textArr;
 var state = 0;
 
-var changeState = ( function(x) {
+var changeState = function(x) {
   state = state + x;
   if (state === 0)
     textArr = {title: 'Canoe', body: 'Boat', body: 'Ship'};
@@ -10,7 +10,7 @@ var changeState = ( function(x) {
       else if (state === 2)
         textArr = {body: 'Canoe', body: 'Boat', title: 'Ship'};
   simply.text(textArr);
-  });
+  };
 
 simply.on('singleClick', function(e) {
   if (e.button === 'up') 
@@ -22,7 +22,6 @@ simply.on('singleClick', function(e) {
           else if (e.button === 'select') {
           }
 });
-
 
 /*
 var count = parseInt(localStorage.getItem('count')) || 0;
