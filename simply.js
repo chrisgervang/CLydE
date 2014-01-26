@@ -1,7 +1,27 @@
-var textArr = {title: 'Options', subtitle: 'Boat', subtitle: 'Ship', subtitle: 'Canoe'};
-simply.text(textArr)
-simply.scrollable(true);
+var textArr;
+var state = 0;
 
+var changeState = new Function(x) {
+  state = state + x;
+  if (state === 0)
+    textArr = {title: 'Canoe', body: 'Boat', body: 'Ship'};
+    else if (state === 1)
+      textArr = {body: 'Canoe', title: 'Boat', body: 'Ship'};
+      else if (state === 2)
+        textArr = {body: 'Canoe', body: 'Boat', title: 'Ship'};
+  simply.text(textArr);
+  }
+
+simply.on('singleClick', function(e) {
+  if (e.button === 'up') 
+    if (state>0)
+      changeState(-1);
+      else if (e.button === 'down') 
+        if (state<2)
+          changeState(1);
+          else if (e.button === 'select') {
+          }
+});
 
 
 /*
