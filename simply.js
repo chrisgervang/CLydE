@@ -1,15 +1,17 @@
 var state = 1;
 var textArr = {title: 'Canoe', subtitle: 'Boat', body: 'Ship'};
 simply.text(textArr);
-simply.style(type = 'large');
+simply.style(type = 'mono');
 
 var changeState = function(x) {
   state = (state + x)%3;
-  if (state === 1){
+  if (state === 1) {
     textArr = {title: 'Ship', subtitle: 'Boat', body: 'Canoe'};
-   } else if (state === 2) {
+     }
+  if (state === 2) {
       textArr = {title: 'Boat', subtitle: 'Canoe', body: 'Ship'};
-     } else if (state === 3) {
+     }
+  if (state === 3) {
         textArr = {title: 'Canoe', subtitle: 'Ship', body: 'Boat'};
      }
   simply.text(textArr);
@@ -18,9 +20,11 @@ var changeState = function(x) {
 simply.on('singleClick', function(e) {
   if (e.button === 'up') {
     changeState(2);
-    } else if (e.button === 'down') {
+    } 
+  if (e.button === 'down') {
       changeState(1);
-    } else if (e.button === 'select') {
+    }
+  if (e.button === 'select') {
       
     }
 });
