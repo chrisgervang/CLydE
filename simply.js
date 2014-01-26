@@ -1,4 +1,4 @@
-text(title: 'Options', subtitle: 'Boat', body: 'Ship')
+text({title: 'Options', subtitle: 'Boat', body: 'Ship'})
 simply.scrollable(true);
 
 
