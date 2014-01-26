@@ -4,6 +4,7 @@ int switchState;
 int motionState;
 int dimPercentLight;
 int dimPercentLED;
+int zeroCrossState;
 
 //Pins
 int LEDSTRIP = A0;
@@ -56,6 +57,7 @@ void fade(String command){
     Serial.println(percent + " " + fadeTime + " " + id);
 }
 
+
 ///////////////////////////////////////////SETUP////////////
 void setup(){
 	pinMode(LEDSTRIP, OUTPUT);
@@ -88,18 +90,18 @@ void loop(){
   fade("percentage,time,ID");
   Serial.println("Boat!");
 
-  if (SWITCH == HIGH) {
-    /* code */
-  } else if (SWITCH == LOW) {
-    /* code */
-  } else if (MOTION == HIGH) {
-    /* code */
-  } else if (MOTION == LOW) {
-    /* code */
-  } else if (ZEROCROSS == HIGH) {
-    /* code */
-  } else if (ZEROCROSS == LOW) {
-    /* code */
+  if (digitalRead(SWITCH) == HIGH) {
+    switchState = true;
+  } else if (digitalRead(SWITCH) == LOW) {
+    switchState = false;
+  } else if (digitalRead(MOTION) == HIGH) {
+    motionState = true;
+  } else if (digitalRead(MOTION) == LOW) {
+    motionState = false;
+  } else if (digitalRead(ZEROCROSS) == HIGH) {
+    zeroCrossState = true;
+  } else if (digitalRead(ZEROCROSS) == LOW) {
+    zeroCrossState = false;
   }
 }
 
