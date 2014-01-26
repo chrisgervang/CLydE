@@ -3,7 +3,7 @@ var x = 0;
 var textArr = {title: 'Canoe', body: 'Boat', body: 'Ship', body: state};
 simply.text(textArr);
 
-function changeState(x) {
+var changeState = function(x) {
   state = state + x;
   if (state === 0){
     textArr = {title: 'Canoe', body: 'Boat', body: 'Ship', body: state};
@@ -13,7 +13,6 @@ function changeState(x) {
         textArr = {body: 'Canoe', body: 'Boat', title: 'Ship', body: state};
      }
   simply.text(textArr);
-  return;
   };
 
 simply.on('singleClick', function(e) {
