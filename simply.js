@@ -28,6 +28,9 @@ simply.on('singleClick', function(e) {                                          
       changeState(0);                                                                 //assume appropriate state
     }
   if ((e.button === 'select') && (home === 1)) {                                      //If select pressed from curtain state
+      //toggle curtains
+      
+      
       curtains = (curtains+1)%2;                                                      //switcth off between 1 and 0
       simply.subtitle(curtains);                                                      //print from buffer
     }
@@ -38,9 +41,11 @@ simply.on('singleClick', function(e) {                                          
     home = 4;                                                                         //enter temp state to avoid bugs
     }
   if ((e.button === 'up') && (home === 2)) {                                          //If up from lights
+    //turn up BULB
     simply.subtitle(++lights);                                                        //disp precentage for lights
     }       
-  if ((e.button === 'down') && (home === 2)) {                                        //if down from lights
+  if ((e.button === 'down') && (home === 2)) {                                     //if down from lights
+    //turn down BULB
     simply.subtitle(--lights);                                                        //disp percentages for limits
     }
   if ((e.button === 'select') && (home === 2)) {                                      //select from lights
@@ -51,10 +56,12 @@ simply.on('singleClick', function(e) {                                          
     }
   
   if ((e.button === 'up') && (home === 3)) {
-    simply.subtitle(++backlight);
+    simply.subtitle(backlight += 10);
+    //turn up STRIP
     }
   if ((e.button === 'down') && (home === 3)) {
-    simply.subtitle(--backlight);
+    simply.subtitle(backlight += 10);
+    //turn down STRIP
     }
   if ((e.button === 'select') && (home === 3)) {
     state = 3;
@@ -62,6 +69,8 @@ simply.on('singleClick', function(e) {                                          
     simply.text(textArr);
     home = 4;
     }
+
+
   if ((e.button === 'select') && (home === 0)) {
       if (state === 1) {
         textArr = {title: 'Curtains', subtitle: curtains, body: 'Toggle curtains'};

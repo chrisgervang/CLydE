@@ -4,9 +4,6 @@
 //write setLightLevel
 //test evrything :D
 //dot i cross t
-
-// #include <TimerOne.h>                    
-
 TCPClient client;
 
 //State variables
@@ -19,7 +16,6 @@ int dimPercentLight = 0; //(0-128) 0 is on, 128 is off
 int dimPercentLED = 0; //(0-255) 0 is off, 255 is on
 
 int switchOn;
-
 //Pins
 int LEDSTRIP = A0;
 int ZEROCROSS = D1;
@@ -158,7 +154,7 @@ int hitSwitch(){
     // if (switchState == 1){
     //     fade("255,20,A");
     //     fade("255,20,B");
-    //     return 1;
+    return 1;
     // } else {
     //     fade("0,20,A");
     //     fade("0,20,B");
@@ -169,15 +165,15 @@ int hitSwitch(){
 
 //Motion detector
 void nightLight(){
-    if (motionState == 1){
-        fade("13,20,A");
-        fade("13,20,B");
-        delay(10000);
-        if (motionState == 0) {
-            fade("0,20,A");
-            fade("0,20,B");
-        }
+  if (motionState == 0){
+    fade("100,20,A");
+    //fade("100,20,B");
+    delay(10000);
+    if (motionState == 1) {
+      fade("0,60,A");
+      //fade("0,60,B");
     }
+  }
 }
 
 
@@ -243,7 +239,7 @@ void getTime(String &hour, String &minute, String &second){
 void loop(){
   //fade("percentage,time,ID");
   //Serial.println("Boat!");
-    switchOn = switchState;
+  int sensesMotion = motionState;
 
   if (digitalRead(SWITCH) == HIGH) {
     switchState = true;
@@ -261,10 +257,11 @@ void loop(){
   //   if (client.connect(timeServer, 80)) {
   //   Serial.println("connected");
   //   motorOn("motorOn");
-  Serial.println(switchState);
-   if (switchState != switchOn){
-       hitSwitch();
-   }
+  //   hitSwitch();
+  Serial.println(motionState);
+  if (motionState != sensesMotion){
+    nightLight();
+  }
   //   // String hour;
   //   // String minute;
   //   // String second;
