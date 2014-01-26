@@ -52,7 +52,8 @@ simply.on('singleClick', function(e) {
   }
   if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) {
     state = 1;
-    simply.subtitle(textArr);
+    textArr = {title: 'Curtains', subtitle: 'Light', body: 'Backlight'};
+    simply.text(textArr);
     home = 0;
   }
 
@@ -66,7 +67,8 @@ simply.on('singleClick', function(e) {
   }
   if ((e.button === 'select') && (home === 2)) {
     state = 2;
-    simply.subtitle(textArr);
+    textArr = {title: 'Light', subtitle: 'Backlight', body: 'Curtains'};
+    simply.text(textArr);
     home = 0;
   }
   
@@ -80,7 +82,8 @@ simply.on('singleClick', function(e) {
   }
   if ((e.button === 'select') && (home === 3)) {
     state = 3;
-    simply.subtitle(textArr);
+    textArr = {title: 'Backlight', subtitle: 'Curtains', body: 'Light'};
+    simply.text(textArr);
     home = 0;
   }
 });
