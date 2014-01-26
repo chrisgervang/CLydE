@@ -5,6 +5,8 @@
 //test evrything :D
 //dot i cross t
 
+#include <TimerOne.h>                    
+
 TCPClient client;
 
 //State variables
@@ -13,8 +15,8 @@ int zeroCrossState = 0;
 int motorState = 0;
 int switchState = 0;
 int motionState = 0;
-int dimPercentLight = 0;
-int dimPercentLED = 0;
+int dimPercentLight = 0; //(0-128) 0 is on, 128 is off
+int dimPercentLED = 0; //(0-255) 0 is off, 255 is on
 
 //Pins
 int LEDSTRIP = A0;
@@ -26,6 +28,14 @@ int SWITCH = D3;
 
 byte timeServer[] = {50, 63, 202, 26};
 
+//ZeroCross Tail light
+volatile int i=0;               // Variable to use as a counter
+volatile boolean zero_cross=0;  // Boolean to store a "switch" to tell us if we have crossed zero
+int PSSR1 = 4;                  // PowerSSR Tail connected to digital pin 4
+int dim = 32;                   // Default dimming level (0-128)  0 = on, 128 = off
+int freqStep = 60;              // Set to 60hz mains
+int LED = 0;                    // LED on Arduino board on digital pin 13
+
 //Functional prototypes
 String getValue(String data, char separator, int index);
 int motorOn(String args);
@@ -36,6 +46,8 @@ void getTime(String &hour, String &minute, String &second);
 int hitSwitch();
 void nightLight();
 void loop();
+void dim_check();
+void zero_cross_detect();
 
 String getValue(String data, char separator, int index) {
   int found = 0;
@@ -79,38 +91,57 @@ int fade(String args){
     //Serial.println(percent + " " + fadeTime + " " + id);
     int percentI = percent.toInt();
     int fadeTimeI = fadeTime.toInt();
-    if(dimPercentLight < percentI) {
-        for(int fadeValue = dimPercentLight ; fadeValue <= 255; fadeValue +=1) { 
-        // sets the value (range from 0 to 255):
-        analogWrite(LEDSTRIP, fadeValue);         
-        // wait for 30 milliseconds to see the dimming effect    
-        delay(fadeTimeI);                            
+
+    if (id == "A") { //LED
+      if(dimPercentLED < percentI) {
+          for(int fadeValue = dimPercentLED ; fadeValue <= percentI; fadeValue +=1) { 
+          // sets the value (range from 0 to 255):
+          analogWrite(LEDSTRIP, fadeValue);         
+          // wait for 30 milliseconds to see the dimming effect    
+          delay(fadeTimeI);                            
+        }
+        return 1;
+      } else if (dimPercentLED > percentI) {
+          for(int fadeValue = dimPercentLED ; fadeValue >= percentI; fadeValue -=1) { 
+            // sets the value (range from 0 to 255):
+            analogWrite(LEDSTRIP, fadeValue);         
+            // wait for 30 milliseconds to see the dimming effect    
+            delay(fadeTimeI); 
+          }
+          return 1;
       }
-      return 1;
-    } else if (dimPercentLight > percentI) {
-         for(int fadeValue = dimPercentLight ; fadeValue >= 0; fadeValue -=1) { 
-        // sets the value (range from 0 to 255):
-        analogWrite(LEDSTRIP, fadeValue);         
+    } else { //ZCT
+      if (dimPercentLight < percentI){
+        for (int fadeValue = dimPercentLight; fadeValue <= percentI; fadeValue+=1){
+        // sets the value (range from 0 to 128):          
+        dim = fadeValue;
         // wait for 30 milliseconds to see the dimming effect    
-        delay(fadeTimeI); 
-         }
-         return 1;
+        delay(fadeTimeI);
+        }
+        return 1;
+      } else if (dimPercentLight > percentI){
+        for(int fadeValue = dimPercentLight; fadeValue >= percentI; fadeValue+=1){
+          // sets the value (range from 0 to 128):          
+          dim = fadeValue;
+          // wait for 30 milliseconds to see the dimming effect    
+          delay(fadeTimeI);
+        }
+        return 1;
+      }
     }
     return -1;
 }
 
 int setFade(String args){
-    String percent = getValue(args, ',', 0);
+    String percent = getValue(args, ',', 0); //0-255 for LED; 0-128 for ZCT
     String id = getValue(args, ',', 1);
     int percentI = percent.toInt();
 
     if (id == "A"){
-        if (dimPercentLight != percentI){
-            analogWrite(LEDSTRIP, percentI);
-        }
+      analogWrite(LEDSTRIP, percentI);
       return 1;
     } else { //id == "B"
-        //Setting light
+      dim = percent;
       return 1;
     }
     return -1;
@@ -145,7 +176,7 @@ void nightLight(){
 
 ///////////////////////////////////////////SETUP////////////
 void setup(){
-    delay(5000);
+  delay(5000);
   pinMode(LEDSTRIP, OUTPUT);
   pinMode(ZEROCROSS, INPUT);
   pinMode(MOTION, INPUT);
@@ -154,9 +185,10 @@ void setup(){
   pinMode(SWITCH, INPUT);
   Serial.begin(9600);
 
-    Spark.function("motorOn", motorOn);
-    Spark.function("fade", fade);
-    Spark.function("setFade", setFade);
+  Spark.function("motorOn", motorOn);
+  Spark.function("fade", fade);
+  Spark.function("setFade", setFade);
+  
   Spark.variable("motorState", &motorState, INT);
   Spark.variable("switchState", &switchState, INT);
   Spark.variable("motionState", &motionState, INT);
@@ -171,6 +203,13 @@ void setup(){
   }  else {
     Serial.println("connection failed");
   }
+
+  //ZCT
+  pinMode(LED, OUTPUT);
+  pinMode(4, OUTPUT);                // Set SSR1 pin as output
+  attachInterrupt(0, zero_cross_detect, RISING);   // Attach an Interupt to digital pin 2 (interupt 0),
+  Timer1.initialize(freqStep);
+  Timer1.attachInterrupt(dim_check,freqStep);
 }
 
 
@@ -214,7 +253,7 @@ void loop(){
   //   if (client.connect(timeServer, 80)) {
   //   Serial.println("connected");
   //   motorOn("motorOn");
-  //   hitSwitch();
+  //   hitSwitch();sssss
   //   // String hour;
   //   // String minute;
   //   // String second;
@@ -227,6 +266,26 @@ void loop(){
 
   // }
 }
+
+void dim_check() {                  // This function will fire the triac at the proper time
+ if(zero_cross == 1) {              // First check to make sure the zero-cross has happened else do nothing
+   if(i>=dim) {
+    delayMicroseconds(100);        //These values will fire the PSSR Tail.
+    digitalWrite(PSSR1, HIGH);
+    delayMicroseconds(50);
+    digitalWrite(PSSR1, LOW); 
+     i = 0;                         // Reset the accumulator
+     zero_cross = 0;                // Reset the zero_cross so it may be turned on again at the next zero_cross_detect    
+   } else {
+     i++;                           // If the dimming value has not been reached, increment the counter
+   }                                // End dim check
+ }                                  // End zero_cross check
+}
+
+void zero_cross_detect() {
+   zero_cross = 1;
+   // set the boolean to true to tell our dimming function that a zero cross has occured
+} 
 
 
 // //loop
