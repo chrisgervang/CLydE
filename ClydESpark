@@ -5,7 +5,11 @@
 //test evrything :D
 //dot i cross t
 
+<<<<<<< HEAD
 //#include <TimerOne.h>                    
+=======
+// #include <TimerOne.h>                    
+>>>>>>> 9aea976e63755ed47aabab2c544f88f3ad877a70
 
 TCPClient client;
 
@@ -18,13 +22,15 @@ int motionState = 0;
 int dimPercentLight = 0; //(0-128) 0 is on, 128 is off
 int dimPercentLED = 0; //(0-255) 0 is off, 255 is on
 
+int switchOn;
+
 //Pins
 int LEDSTRIP = A0;
 int ZEROCROSS = D1;
 int MOTION = D0;
 int MOTOR = D2;
 int HVDIM = A1;
-int SWITCH = D3;
+int SWITCH = D4;
 
 byte timeServer[] = {50, 63, 202, 26};
 
@@ -94,37 +100,41 @@ int fade(String args){
 
     if (id == "A") { //LED
       if(dimPercentLED < percentI) {
-          for(int fadeValue = dimPercentLED ; fadeValue <= percentI; fadeValue +=1) { 
+          for(int fadeValue = dimPercentLED ; fadeValue <= percentI; fadeValue +=5) { 
           // sets the value (range from 0 to 255):
           analogWrite(LEDSTRIP, fadeValue);         
           // wait for 30 milliseconds to see the dimming effect    
-          delay(fadeTimeI);                            
+          delay(fadeTimeI);
+          dimPercentLED = fadeValue;
         }
         return 1;
       } else if (dimPercentLED > percentI) {
-          for(int fadeValue = dimPercentLED ; fadeValue >= percentI; fadeValue -=1) { 
+          for(int fadeValue = dimPercentLED ; fadeValue >= percentI; fadeValue -=5) { 
             // sets the value (range from 0 to 255):
             analogWrite(LEDSTRIP, fadeValue);         
             // wait for 30 milliseconds to see the dimming effect    
             delay(fadeTimeI); 
+            dimPercentLED = fadeValue;
           }
           return 1;
       }
     } else { //ZCT
       if (dimPercentLight < percentI){
-        for (int fadeValue = dimPercentLight; fadeValue <= percentI; fadeValue+=1){
+        for (int fadeValue = dimPercentLight; fadeValue <= percentI; fadeValue+=5){
         // sets the value (range from 0 to 128):          
         dim = fadeValue;
         // wait for 30 milliseconds to see the dimming effect    
         delay(fadeTimeI);
+        dimPercentLight = fadeValue;
         }
         return 1;
       } else if (dimPercentLight > percentI){
-        for(int fadeValue = dimPercentLight; fadeValue >= percentI; fadeValue+=1){
+        for(int fadeValue = dimPercentLight; fadeValue >= percentI; fadeValue+=5){
           // sets the value (range from 0 to 128):          
           dim = fadeValue;
           // wait for 30 milliseconds to see the dimming effect    
           delay(fadeTimeI);
+          dimPercentLED = fadeValue;
         }
         return 1;
       }
@@ -148,15 +158,16 @@ int setFade(String args){
 }
 
 int hitSwitch(){
-    if (switchState == 1){
-        fade("255,20,A");
-        fade("255,20,B");
-        return 1;
-    } else {
-        fade("0,20,A");
-        fade("0,20,B");
-        return 0;
-    }
+    Serial.println("HIT");
+    // if (switchState == 1){
+    //     fade("255,20,A");
+    //     fade("255,20,B");
+    //     return 1;
+    // } else {
+    //     fade("0,20,A");
+    //     fade("0,20,B");
+    //     return 0;
+    //}
     
 }
 
@@ -208,8 +219,8 @@ void setup(){
   pinMode(LED, OUTPUT);
   pinMode(4, OUTPUT);                // Set SSR1 pin as output
   attachInterrupt(0, zero_cross_detect, RISING);   // Attach an Interupt to digital pin 2 (interupt 0),
-  Timer1.initialize(freqStep);
-  Timer1.attachInterrupt(dim_check,freqStep);
+  //Timer1.initialize(freqStep);
+  //Timer1.attachInterrupt(dim_check,freqStep);
 }
 
 
@@ -236,6 +247,7 @@ void getTime(String &hour, String &minute, String &second){
 void loop(){
   //fade("percentage,time,ID");
   //Serial.println("Boat!");
+    switchOn = switchState;
 
   if (digitalRead(SWITCH) == HIGH) {
     switchState = true;
@@ -253,7 +265,14 @@ void loop(){
   //   if (client.connect(timeServer, 80)) {
   //   Serial.println("connected");
   //   motorOn("motorOn");
+<<<<<<< HEAD
   //   hitSwitch();
+=======
+  Serial.println(switchState);
+   if (switchState != switchOn){
+       hitSwitch();
+   }
+>>>>>>> 9aea976e63755ed47aabab2c544f88f3ad877a70
   //   // String hour;
   //   // String minute;
   //   // String second;
