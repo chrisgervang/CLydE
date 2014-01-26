@@ -40,11 +40,9 @@ simply.on('singleClick', function(e) {
     }
   if ((e.button === 'up') && (home === 2)) {
     simply.subtitle(++lights);
-    clearInterval(interval);
     }
   if ((e.button === 'down') && (home === 2)) {
     simply.subtitle(--lights);
-    clearInterval(interval);
     }
   if ((e.button === 'select') && (home === 2)) {
     state = 2;
@@ -55,11 +53,9 @@ simply.on('singleClick', function(e) {
   
   if ((e.button === 'up') && (home === 3)) {
     simply.subtitle(++backlight);
-    clearInterval(interval);
     }
   if ((e.button === 'down') && (home === 3)) {
     simply.subtitle(--backlight);
-    clearInterval(interval);
     }
   if ((e.button === 'select') && (home === 3)) {
     state = 3;
