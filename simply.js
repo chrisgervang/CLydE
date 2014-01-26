@@ -5,11 +5,11 @@ simply.text(textArr);
 var changeState = function(x) {
   state = (state + x)%3;
   if (state === 1){
-    textArr = {title: 'Canoe', subtitle: 'Boat', body: 'Ship'};
+    textArr = {title: 'Ship', subtitle: 'Boat', body: 'Canoe'};
    } else if (state === 2) {
-      textArr = {title: 'Boat', subtitle: 'Ship', body: 'Canoe'};
+      textArr = {title: 'Canoe', subtitle: 'Ship', body: 'Boat'};
      } else if (state === 3) {
-        textArr = {title: 'Ship', subtitle: 'Canoe', body: 'Boat'};
+        textArr = {title: 'Boat', subtitle: 'Canoe', body: 'Ship'};
      }
   simply.text(textArr);
   };
