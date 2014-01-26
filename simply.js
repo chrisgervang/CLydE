@@ -1,7 +1,7 @@
 var textArr;
 var state = 0;
 
-var changeState = function(x) {
+function changeState(x) {
   state = state + x;
   if (state === 0)
     textArr = {title: 'Canoe', body: 'Boat', body: 'Ship'};
