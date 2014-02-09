@@ -110,10 +110,10 @@ app.get('/curtain', function(request, response){
 
 var lightState = false;
 
-app.get('/goognight', function(request, response){
+app.get('/goodnight', function(request, response){
 	response.send("goodnight sir!");
 	speak("Goodnight sir!");
-	core.fade("0,60,A", function(err, data) {
+	core.fade("0,20,A", function(err, data) {
 		console.log(data);
 	});
 
@@ -341,13 +341,13 @@ function wake() {
 
 
 
-	var command = 'osascript /Users/chrisgervang/CLydE/spotify.scpt;'
-	child = exec(command, function(error, stdout, stderr){
-		console.log('stdout: ' + stdout);
-		console.log('stderr: ' + stderr);
-		if(error !== null) {
-		    console.log('exec error: ' + error);
-		}
+	// var command = 'osascript /Users/chrisgervang/CLydE/spotify.scpt;'
+	// child = exec(command, function(error, stdout, stderr){
+	// 	console.log('stdout: ' + stdout);
+	// 	console.log('stderr: ' + stderr);
+	// 	if(error !== null) {
+	// 	    console.log('exec error: ' + error);
+	// 	}
 		//doMethod("fade","255,500,A");
 		//doMethod("motorOn", "motorOn");
 		// var command = 'curl --data "args=255,500,A" https://api.spark.io/v1/devices/48ff6e065067555050192387/fade?access_token=427016082e1adc9172f7e6c32e810a26bcc6ebd8';
@@ -358,15 +358,15 @@ function wake() {
 		// 	    console.log('exec error: ' + error);
 		// 	}
 		// });
-	hue.setGroupLightState(0, LightState.create().on().white(450, 70).transition(5), function(err, result) {
+			hue.setGroupLightState(0, LightState.create().on().transition(5).white(450, 70), function(err, result) {
 		    if (err) throw err;
 		    	console.log(result, "BOAT");
 			});
 
-	core.fade("255,500,A", function(err, data) {
-	  console.log(data);
+	// core.fade("255,500,A", function(err, data) {
+	//   console.log(data);
 	  	
-	});
+	// });
 		setTimeout(function() {
 	    	console.log("ping");
 	    	core.motorOn("motorOn", function(err, data) {
@@ -383,7 +383,7 @@ function wake() {
 		// 	    console.log('exec error: ' + error);
 		// 	}
 		// });
-	});
+	// });
 
 	
 
