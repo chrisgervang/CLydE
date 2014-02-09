@@ -3,7 +3,7 @@ var home = 0;                                                                   
 var curtains = 0;                                                                     //Whether curtains are drawn (Bool)
 var lights = 0;                                                                       //Closet Light Brightness
 var backlight = 0;                                                                    //LedLight brightness
-var textArr = {title: 'Curtains', subtitle: 'Go to Work', body: 'Closet Light'};              //Load print heads
+var textArr = {title: 'Closet Light', subtitle: 'Go to Work', body: 'Curtains'};              //Load print heads
 simply.text(textArr);                                                                 //print pre-prepared phrases
 
 var ajax2 = function(opt, success, failure) {
