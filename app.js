@@ -123,6 +123,23 @@ app.get('/goognight', function(request, response){
 	});
 });
 
+app.get('/goToWork', function(request, response){
+	//close blind
+	core.motorOn('motorOn', function(err, data) {
+	  console.log(data);
+	});
+	//fade lights
+	lightState = false;
+	hue.setGroupLightState(0, states.off, function(err, result) {
+    if (err) throw err;
+    	console.log(result);
+	});
+	core.fade("0,20,A", function(err, data) {
+	  console.log(data, command);
+	});
+});
+
+
 //
 app.get('/toggleLights', function(request, response){
 	//options:
@@ -161,9 +178,24 @@ app.get('/toggleLights', function(request, response){
 			});
 		});
 	} else if (lightsConfig[0] == "closet") {
-		
+		var command;
+		core.dimLED(function(err, value) {
+			if (value > 0) {
+				//doMethod("fade","0,20,A");
+				command = "0,20,A";
+				lightState = false;
+			} else {
+				//doMethod("fade","255,20,A");
+				command = "255,20,A";
+				lightState = true;
+				// hue.setGroupLightState(0, state.on().white)
+			}
+			core.fade(command, function(err, data) {
+				console.log(data, command);
+			});
+		});
 	} else if (lightsConfig[0] == "room") {
-		
+
 	}
 });
 
