@@ -125,42 +125,46 @@ app.get('/goognight', function(request, response){
 
 //
 app.get('/toggleLights', function(request, response){
+	//options:
+	//closet
+	//room
+	//both
+	var lightsConfig = request.query["params"].split(',');
+
+
 	response.send("toggleing lights");
 
-	speak("Hello Sir, Let's toggle the lights!");
-	
-	var command;
-	core.dimLED(function(err, value) {
-		if (value > 0) {
-			//doMethod("fade","0,20,A");
-			command = "0,20,A";
-			lightState = false;
-			hue.setGroupLightState(0, states.off, function(err, result) {
-		    if (err) throw err;
-		    	console.log(result);
+	//speak("Hello Sir, Let's toggle the lights!");
+	if (lightsConfig[0] == "both") {
+		var command;
+		core.dimLED(function(err, value) {
+			if (value > 0) {
+				//doMethod("fade","0,20,A");
+				command = "0,20,A";
+				lightState = false;
+				hue.setGroupLightState(0, states.off, function(err, result) {
+			    if (err) throw err;
+			    	console.log(result);
+				});
+			} else {
+				//doMethod("fade","255,20,A");
+				command = "255,20,A";
+				lightState = true;
+				// hue.setGroupLightState(0, state.on().white)
+				hue.setGroupLightState(0, states.on, function(err, result) {
+			    if (err) throw err;
+			    	console.log(result, "BOAT");
+				});
+			}
+			core.fade(command, function(err, data) {
+			  console.log(data, command);
 			});
-		} else {
-			//doMethod("fade","255,20,A");
-			command = "255,20,A";
-			lightState = true;
-			// hue.setGroupLightState(0, state.on().white)
-			hue.setGroupLightState(0, states.on, function(err, result) {
-		    if (err) throw err;
-		    	console.log(result, "BOAT");
-			});
-		}
-		core.fade(command, function(err, data) {
-		  console.log(data, command);
 		});
-	});
-
-	// child = exec(command, function(error, stdout, stderr){
-	// 	console.log('stdout: ' + stdout);
-	// 	console.log('stderr: ' + stderr);
-	// 	if(error !== null) {
-	// 	    console.log('exec error: ' + error);
-	// 	}
-	// });
+	} else if (lightsConfig[0] == "closet") {
+		
+	} else if (lightsConfig[0] == "room") {
+		
+	}
 });
 
 var lightDim = 0;
