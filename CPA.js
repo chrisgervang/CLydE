@@ -25,6 +25,7 @@ var updateTime = function() {
       simple.subtitle("                                     " + hour + ":0" + minute);
       }
     }
+    return;
 };  // updates time maintaining format
 
 var checkAction = function() {
@@ -33,6 +34,7 @@ var checkAction = function() {
     } else {
       simply.subtitle(" it's time to go!");
     }
+    return;
 };  // Determins whether to update time or announce "Time to go!" 
 
 
@@ -64,6 +66,4 @@ simply.on('singleClick', function(e) {
       }
     checkAction();
   }
-});  // Handler for up and down clicks
-
-//  EOF
+});
