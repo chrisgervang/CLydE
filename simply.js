@@ -113,7 +113,7 @@ simply.on('singleClick', function(e) {                                          
         home = 1;
         }
       if (state === 2) {
-        textArr = {title: 'Closet Lights', subtitle: lights, body: 'Toggle Closet Lights'};
+        //textArr = {title: 'Closet Lights', subtitle: lights, body: 'Toggle Closet Lights'};
         simply.text(textArr);
         //home = 2;
         ajax2({ url: 'http://192.168.1.74:3000/toggleLights?params=closet' }, function(data){
