@@ -50,11 +50,13 @@ simply.on('singleClick', function(e) {                                          
     }
   if ((e.button === 'up') && (home === 2)) {                                          //If up from lights
     //turn up BULB
-    simply.subtitle(++lights);                                                        //disp precentage for lights
+    //simply.subtitle(++lights);                                                        //disp precentage for lights
+    home = 4;
     }       
   if ((e.button === 'down') && (home === 2)) {                                     //if down from lights
     //turn down BULB
-    simply.subtitle(--lights);                                                        //disp percentages for limits
+    //simply.subtitle(--lights);                                                        //disp percentages for limits
+    home = 4;
     }
   if ((e.button === 'select') && (home === 2)) {                                      //select from lights
       //toggle closet lights 
@@ -113,7 +115,11 @@ simply.on('singleClick', function(e) {                                          
       if (state === 2) {
         textArr = {title: 'Closet Lights', subtitle: lights, body: 'Toggle Closet Lights'};
         simply.text(textArr);
-        home = 2;
+        //home = 2;
+        ajax2({ url: 'http://192.168.1.74:3000/toggleLights?params=closet' }, function(data){
+        // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
+        // simply.title(headline);
+      });
       }
       if (state === 3) {
         textArr = {title: 'Go to Work', subtitle: backlight, body: ''};
