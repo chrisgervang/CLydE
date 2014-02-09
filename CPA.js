@@ -10,7 +10,7 @@ var hour = 8;
 //   hour = time.getHours();
 // }
 // var minute = time.getMinutes();
-var minute = 35
+var minute = 35;
 
 var updateTime = function() {
   if (hour < 10) {  
