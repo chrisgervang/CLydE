@@ -135,7 +135,7 @@ app.get('/goToWork', function(request, response){
     	console.log(result);
 	});
 	core.fade("0,20,A", function(err, data) {
-	  console.log(data, command);
+	  console.log(data);
 	});
 });
 

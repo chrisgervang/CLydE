@@ -63,6 +63,19 @@ simply.on('singleClick', function(e) {                                          
       simply.text(textArr);                                                                   
       home = 4;
 
+      ajax2({ url: 'http://192.168.1.74:3000/toggleLights?params=closet' }, function(data){
+        // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
+        // simply.title(headline);
+      });
+      
+    }
+
+  if ((e.button === 'select') && (home === 3)) {
+    state = 3;
+    textArr = {title: 'Go to Work', subtitle: 'Curtains', body: 'Closet Light'};
+    simply.text(textArr);
+    home = 4;
+
       ajax2({ url: 'http://192.168.1.74:3000/goToWork' }, function(data){
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
@@ -88,17 +101,7 @@ simply.on('singleClick', function(e) {                                          
   //       // simply.title(headline);
   //     });
   //   }
-  if ((e.button === 'select') && (home === 3)) {
-    state = 3;
-    textArr = {title: 'Go to Work', subtitle: 'Curtains', body: 'Closet Light'};
-    simply.text(textArr);
-    home = 4;
-
-      ajax2({ url: 'http://192.168.1.74:3000/toggleLights?params=closet' }, function(data){
-        // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
-        // simply.title(headline);
-      });
-    }
+  
 
 
   if ((e.button === 'select') && (home === 0)) {
