@@ -1,4 +1,4 @@
-var state = 1;                                                                        //Logical Machine State
+var state = 2;                                                                        //Logical Machine State
 var home = 0;                                                                         //Cerent_screen==Home?
 var curtains = 0;                                                                     //Whether curtains are drawn (Bool)
 var lights = 0;                                                                       //Closet Light Brightness
