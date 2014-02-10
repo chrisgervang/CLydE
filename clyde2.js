@@ -2,14 +2,16 @@ var clicks = 5;  // Amount of click until "time to go!"
 
 simply.body("", true);  // Clears initial screen
 simply.title('        CLydE');  // Initialize "CLydE" title
-var time = new Date();  // Fetch current time
-var hour;
-if(time.getHours() > 12){
-  hour = time.getHours() - 12;
-} else {
-  hour = time.getHours();
-}
-var minute = time.getMinutes();
+// var time = new Date();  // Fetch current time
+// var hour;
+// if(time.getHours() > 12){
+//   hour = time.getHours() - 12;
+// } else {
+//   hour = time.getHours();
+// }
+// var minute = time.getMinutes();
+var hour = 8;
+var minute = 35;
 
 var updateTime = function() {
   if (hour < 10) {  
@@ -39,6 +41,13 @@ var checkAction = function() {
 
 
 updateTime();  // Initialize time
+
+var incMinute = function() {
+  setTimeout(incMinute,1000);
+  minute++;
+};
+
+incMinute();
 
 simply.on('singleClick', function(e) {
   if (e.button === 'up') {
