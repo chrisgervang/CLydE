@@ -37,5 +37,5 @@ updateTime();  // Initialize time
   setTimeout(function(){
     minute++;
   checkAction();
-  )},1000);
+  },1000);
   
