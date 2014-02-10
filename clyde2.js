@@ -50,30 +50,30 @@ var incMinute = function() {
 
 incMinute();
 
-simply.on('singleClick', function(e) {
-  if (e.button === 'up') {
-    if(minute === 59) {
-      minute = 0;
-        if (hour != 12) {
-          hour += 1;
-        } else {
-          hour = 1;
-        }
-    } else {
-      minute += 1;
-    }
-    checkAction();
-  } else if (e.button === 'down') {
-    if (minute === 0) {
-      minute = 59;
-       if (hour != 1) {
-          hour -= 1;
-        } else {
-          hour = 12;
-        }
-      } else {
-        minute -= 1;
-      }
-    checkAction();
-  }
-});
+// simply.on('singleClick', function(e) {
+//   if (e.button === 'up') {
+//     if(minute === 59) {
+//       minute = 0;
+//         if (hour != 12) {
+//           hour += 1;
+//         } else {
+//           hour = 1;
+//         }
+//     } else {
+//       minute += 1;
+//     }
+//     checkAction();
+//   } else if (e.button === 'down') {
+//     if (minute === 0) {
+//       minute = 59;
+//        if (hour != 1) {
+//           hour -= 1;
+//         } else {
+//           hour = 12;
+//         }
+//       } else {
+//         minute -= 1;
+//       }
+//     checkAction();
+//   }
+// });
