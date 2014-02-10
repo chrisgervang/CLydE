@@ -33,9 +33,8 @@ var checkAction = function() {
 
 
 updateTime();  // Initialize time
-
   setInterval(function(){
-    minute++;
-  checkAction();
+    minute += 1;
+    checkAction();
   },1000);
   
