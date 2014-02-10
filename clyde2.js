@@ -1,4 +1,4 @@
-var clicks = 5;  // Amount of click until "time to go!"
+var clicks = 10;  // Amount of click until "time to go!"
 
 simply.body("", true);  // Clears initial screen
 simply.title('        CLydE');  // Initialize "CLydE" title
@@ -45,6 +45,7 @@ updateTime();  // Initialize time
 var incMinute = function() {
   setTimeout(incMinute,1000);
   minute++;
+  checkAction();
 };
 
 incMinute();
