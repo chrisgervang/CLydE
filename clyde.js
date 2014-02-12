@@ -1,4 +1,4 @@
-var clicks = 10;  // Amount of click until "time to go!"
+var clicks = 6;  // Amount of click until "time to go!"
 
 simply.body("", true);  // Clears initial screen
 simply.title('        CLydE');  // Initialize "CLydE" title
@@ -37,45 +37,32 @@ var checkAction = function() {
     return;
 };  // Determins whether to update time or announce "Time to go!" 
 
-///updateTime();  // Initialize time
+updateTime();  // Initialize time
 
-ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-  simply.subtitle("                                   08:36");
-  
-  ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-    simply.subtitle("                                   08:37");
-    
-    ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-      simply.subtitle("                                   08:38");
-      
-      ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-        simply.subtitle("                                   08:39");
-
-        ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-          simply.subtitle("                                   08:40");
-
-          ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-            simply.subtitle("                                   08:41");
-
-            ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-              simply.subtitle("                                   08:42");
-
-              ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-                      simply.subtitle("                                   08:43");
-
-                ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-                        simply.subtitle("                                   08:44");
-
-                  ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-                          simply.subtitle("                                   08:45");
-
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-});
-});
+simply.on('singleClick', function(e) {
+  if (e.button === 'up') {
+    if(minute === 59) {
+      minute = 0;
+        if (hour != 12) {
+          hour += 1;
+        } else {
+          hour = 1;
+        }
+    } else {
+      minute += 1;
+    }
+    checkAction();
+  } else if (e.button === 'down') {
+    if (minute === 0) {
+      minute = 59;
+       if (hour != 1) {
+          hour -= 1;
+        } else {
+          hour = 12;
+        }
+      } else {
+        minute -= 1;
+      }
+    checkAction();
+  }
 });
