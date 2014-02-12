@@ -3,7 +3,7 @@ var clicks = 10;  // Amount of click until "time to go!"
 simply.body("", true);  // Clears initial screen
 simply.title('        CLydE');  // Initialize "CLydE" title
 var hour = 8;
-var minute = 35;
+minute = 35;
 
 var ajax2 = function(opt, success, failure) {
   return ajax(opt, success, failure || function(data, status) {
