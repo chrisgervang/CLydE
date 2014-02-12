@@ -142,6 +142,10 @@ app.get('/goToWork', function(request, response){
 	});
 });
 
+app.get('/second', function(request, response){
+	response.send("BOAT");
+});
+
 
 //
 app.get('/toggleLights', function(request, response){

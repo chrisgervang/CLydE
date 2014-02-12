@@ -31,28 +31,45 @@ var checkAction = function() {
     return;
 };  // Determins whether to update time or announce "Time to go!" 
 
-var interval = function(func, wait, times){
-    var interv = function(w, t){
-        return function(){
-            if(typeof t === "undefined" || t-- > 0){
-                setTimeout(interv, w);
-                try{
-                    func.call(null);
-                }
-                catch(e){
-                    t = 0;
-                    throw e.toString();
-                }
-            }
-        };
-    }(wait, times);
-
-    setTimeout(interv, wait);
-};
-
 updateTime();  // Initialize time
 
-interval(function() {
+ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
   minute += 1;
   checkAction();
-}, 1000, 12);
+  ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
+    minute += 1;
+    checkAction();
+    ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
+      minute += 1;
+      checkAction();
+      ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
+        minute += 1;
+        checkAction();
+        ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
+          minute += 1;
+          checkAction();
+          ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
+            minute += 1;
+            checkAction();
+            ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
+              minute += 1;
+              checkAction();
+              ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
+                minute += 1;
+                checkAction();
+                ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
+                  minute += 1;
+                  checkAction();
+                  ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
+                    minute += 1;
+                    checkAction();
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+});
+});
+});
