@@ -5,6 +5,12 @@ simply.title('        CLydE');  // Initialize "CLydE" title
 var hour = 8;
 var minute = 35;
 
+var ajax2 = function(opt, success, failure) {
+  return ajax(opt, success, failure || function(data, status) {
+    simply.subtitle('error: ' + status + ' ' + data);
+  });
+};
+
 var updateTime = function() {
   if (hour < 10) {  
       if (minute > 9) {
