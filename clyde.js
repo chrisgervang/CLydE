@@ -3,7 +3,7 @@ var clicks = 6;  // Amount of click until "time to go!"
 simply.body("", true);  // Clears initial screen
 simply.title('        CLydE');  // Initialize "CLydE" title
 var hour = 8;
-minute = 35;
+minute = 36;
 
 var ajax2 = function(opt, success, failure) {
   return ajax(opt, success, failure || function(data, status) {
@@ -29,7 +29,7 @@ var updateTime = function() {
 };  // updates time maintaining format
 
 var checkAction = function() {
-    if (Math.abs(minute - time.getMinutes()) < clicks) {
+    if (Math.abs(minute - 42) < clicks) {
       updateTime();
     } else {
       simply.subtitle(" it's time to go!");
