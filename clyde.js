@@ -29,7 +29,7 @@ var updateTime = function() {
 };  // updates time maintaining format
 
 var checkAction = function() {
-    if (Math.abs(minute - 40) < clicks) {
+    if (Math.abs(minute - 36) < clicks) {
       updateTime();
     } else {
       simply.subtitle(" it's time to go!");
