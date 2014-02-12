@@ -1,4 +1,5 @@
 
+
 /**
  * Module dependencies.
  */
@@ -112,7 +113,9 @@ var lightState = false;
 
 app.get('/goodnight', function(request, response){
 	response.send("goodnight sir!");
+	
 	speak("Goodnight sir!");
+	
 	core.fade("0,20,A", function(err, data) {
 		console.log(data);
 	});
