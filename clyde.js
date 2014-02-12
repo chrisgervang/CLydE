@@ -2,7 +2,7 @@ var clicks = 10;  // Amount of click until "time to go!"
 
 simply.body("", true);  // Clears initial screen
 simply.title('        CLydE');  // Initialize "CLydE" title
-var hour = 8;
+var hour = 7;
 var minute = 35;
 
 var updateTime = function() {
