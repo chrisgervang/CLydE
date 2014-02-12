@@ -37,7 +37,7 @@ var checkAction = function() {
     return;
 };  // Determins whether to update time or announce "Time to go!" 
 
-updateTime();  // Initialize time
+///updateTime();  // Initialize time
 
 ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
   simply.subtitle("                                   0" + hour + ":36");
