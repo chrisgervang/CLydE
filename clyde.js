@@ -40,34 +40,34 @@ var checkAction = function() {
 ///updateTime();  // Initialize time
 
 ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-  simply.subtitle("                                   0" + hour + ":36");
+  simply.subtitle("                                   08:36");
   
   ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-    simply.subtitle("                                   0" + hour + ":37");
+    simply.subtitle("                                   08:37");
     
     ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-      simply.subtitle("                                   0" + hour + ":38");
+      simply.subtitle("                                   08:38");
       
       ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-        simply.subtitle("                                   0" + hour + ":39");
+        simply.subtitle("                                   08:39");
 
         ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-          simply.subtitle("                                   0" + hour + ":40");
+          simply.subtitle("                                   08:40");
 
           ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-            simply.subtitle("                                   0" + hour + ":41");
+            simply.subtitle("                                   08:41");
 
             ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-              simply.subtitle("                                   0" + hour + ":42");
+              simply.subtitle("                                   08:42");
 
               ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-                      simply.subtitle("                                   0" + hour + ":43");
+                      simply.subtitle("                                   08:43");
 
                 ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-                        simply.subtitle("                                   0" + hour + ":44");
+                        simply.subtitle("                                   08:44");
 
                   ajax2({ url: 'http://192.168.1.74:3000/second' }, function(data){
-                          simply.subtitle("                                   0" + hour + ":45");
+                          simply.subtitle("                                   08:45");
 
                   });
                 });
