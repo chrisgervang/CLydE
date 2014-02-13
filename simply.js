@@ -1,9 +1,9 @@
-var state = 1;                                                                        //Logical Machine State
+var state = 2;                                                                        //Logical Machine State
 var home = 0;                                                                         //Cerent_screen==Home?
 var curtains = 0;                                                                     //Whether curtains are drawn (Bool)
-var lights = 0;                                                                       //Light Brightness
+var lights = 0;                                                                       //Closet Light Brightness
 var backlight = 0;                                                                    //LedLight brightness
-var textArr = {title: 'Curtains', subtitle: 'Backlight', body: 'Light'};              //Load print heads
+var textArr = {title: 'Closet Light', subtitle: 'Go to Work', body: 'Curtains'};              //Load print heads
 simply.text(textArr);                                                                 //print pre-prepared phrases
 
 var ajax2 = function(opt, success, failure) {
@@ -15,13 +15,13 @@ var ajax2 = function(opt, success, failure) {
 var changeState = function(x) {                                                       //Funct Change current logical state
   state = ((state + x)%3) + 1;                                                        //Complex to alliviate click funtcs
   if (state === 1) {                                                                  //If curtain state
-        textArr = {title: 'Curtains', subtitle: 'Light', body: 'Backlight'};          //show appropriate menu
+        textArr = {title: 'Curtains', subtitle: 'Closet Light', body: 'Go to Work'};          //show appropriate menu
      }  
   if (state === 2) {                                                                  //if Lights state
-    textArr = {title: 'Light', subtitle: 'Backlight', body: 'Curtains'};              //""                    ""
+    textArr = {title: 'Closet Light', subtitle: 'Go to Work', body: 'Curtains'};              //""                    ""
      }
   if (state === 3) {                                                                  //If Led lights
-      textArr = {title: 'Backlight', subtitle: 'Curtains', body: 'Light'};            //""
+      textArr = {title: 'Go to Work', subtitle: 'Curtains', body: 'Closet Light'};            //""
      }
   simply.text(textArr);                                                               //print from buffer
   };
@@ -38,71 +38,91 @@ simply.on('singleClick', function(e) {                                          
 
       curtains = (curtains+1)%2; 
       simply.subtitle(curtains);   
-      ajax2({ url: 'http://10.55.54.162:3000/curtain' }, function(data){
+      ajax2({ url: 'http://192.168.1.74:3000/curtain' }, function(data){
         simply.subtitle(data);
       });                                                     //switcth off between 1 and 0                                                   //print from buffer
     }
   if (((e.button === 'up') && (home === 1)) || ((e.button === 'down') && (home === 1))) { //up or down button from curtains
     state = 1;                                                                        //prepare ffor curtains
-    textArr = {title: 'Curtains', subtitle: 'Light', body: 'Backlight'};              //buffer string    
+    textArr = {title: 'Curtains', subtitle: 'Closet Light', body: 'Go to Work'};              //buffer string    
     simply.text(textArr);                                                             //print string
     home = 4;                                                                         //enter temp state to avoid bugs
     }
   if ((e.button === 'up') && (home === 2)) {                                          //If up from lights
     //turn up BULB
-    simply.subtitle(++lights);                                                        //disp precentage for lights
+    //simply.subtitle(++lights);                                                        //disp precentage for lights
+    home = 4;
     }       
   if ((e.button === 'down') && (home === 2)) {                                     //if down from lights
     //turn down BULB
-    simply.subtitle(--lights);                                                        //disp percentages for limits
+    //simply.subtitle(--lights);                                                        //disp percentages for limits
+    home = 4;
     }
   if ((e.button === 'select') && (home === 2)) {                                      //select from lights
-    state = 2;                                                                        //load state 2
-    textArr = {title: 'Light', subtitle: 'Backlight', body: 'Curtains'};              //Back to proper menu
-    simply.text(textArr);                                                                   
-    home = 4;
-    }
-  
-  if ((e.button === 'up') && (home === 3)) {
-    backlight += 20;
-    simply.subtitle(backlight);
-    ajax2({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
-        // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
-        // simply.title(headline);
-      });
-    //turn up STRIP
-    }
-  if ((e.button === 'down') && (home === 3)) {
-    backlight -= 20;
-    //turn down STRIP
-    simply.subtitle(backlight);
-    ajax2({ url: 'http://10.55.54.162:3000/dimLights?params='+backlight+',20,A' }, function(data){
+      //toggle closet lights 
+      state = 2;                                                                        //load state 2
+      textArr = {title: 'Closet Light', subtitle: 'Go to Work', body: 'Curtains'};              //Back to proper menu
+      simply.text(textArr);                                                                   
+      home = 4;
 
+      ajax2({ url: 'http://192.168.1.74:3000/toggleLights?params=closet' }, function(data){
         // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
         // simply.title(headline);
       });
+      
     }
+
   if ((e.button === 'select') && (home === 3)) {
     state = 3;
-    textArr = {title: 'Backlight', subtitle: 'Curtains', body: 'Light'};
+    textArr = {title: 'Go to Work', subtitle: 'Curtains', body: 'Closet Light'};
     simply.text(textArr);
     home = 4;
+
+      ajax2({ url: 'http://192.168.1.74:3000/goToWork' }, function(data){
+        // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
+        // simply.title(headline);
+      });
     }
+  
+  // if ((e.button === 'up') && (home === 3)) {
+  //   backlight += 20;
+  //   simply.subtitle(backlight);
+  //   ajax2({ url: 'http://192.168.1.74:3000/toggleLights?params=closet' }, function(data){
+  //       // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
+  //       // simply.title(headline);
+  //     });
+  //   //turn up STRIP
+  //   }
+  // if ((e.button === 'down') && (home === 3)) {
+  //   backlight -= 20;
+  //   //turn down STRIP
+  //   simply.subtitle(backlight);
+  //   ajax2({ url: 'http://192.168.1.74:3000/toggleLights?params=closet' }, function(data){
+
+  //       // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
+  //       // simply.title(headline);
+  //     });
+  //   }
+  
 
 
   if ((e.button === 'select') && (home === 0)) {
       if (state === 1) {
-        textArr = {title: 'Curtains', subtitle: curtains, body: 'Toggle curtains'};
+        textArr = {title: 'Curtains', subtitle: curtains, body: 'Toggle Curtains'};
         simply.text(textArr);
         home = 1;
         }
       if (state === 2) {
-        textArr = {title: 'Lights', subtitle: lights, body: 'Toggle lights'};
+        //textArr = {title: 'Closet Lights', subtitle: lights, body: 'Toggle Closet Lights'};
         simply.text(textArr);
-        home = 2;
+        //home = 2;
+        ajax2({ url: 'http://192.168.1.74:3000/toggleLights?params=closet' }, function(data){
+        // var headline = data.match(/<h1>(.*?)<\/h1>/)[1];
+        // simply.title(headline);
+      });
       }
       if (state === 3) {
-        textArr = {title: 'Backlight', subtitle: backlight, body: 'Toggle backlight'};
+        textArr = {title: 'Go to Work', subtitle: backlight, body: ''};
         simply.text(textArr);
         home = 3;
       }
@@ -110,6 +130,7 @@ simply.on('singleClick', function(e) {                                          
   if (home === 4) {
     home = 0;
   }
+
 });
 
 /*

@@ -1,0 +1,1 @@
+[{"id":"48ff6e065067555050192387","name":"charm","variables":{"motorState":"int32","switchState":"int32","motionState":"int32","dimPercentLi":"int32","dimLED":"int32","FadeDoneIn":"int32"},"functions":["motorOn","fade","setFade"]}]
