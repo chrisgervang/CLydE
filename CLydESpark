@@ -1,21 +1,3 @@
-String = "http://www.timeapi.org/"
-//setup
-if (client.connect(server, 80)) {
-	Serial.println("connected");
-	client.println("GET utc/now?\H:\M:\S");
-	client.println();
-} 
-else {
-	Serial.println("connection failed");
 }
-//loop
-if (client.available()) {
-	char c = client.read();
-	Serial.print(c);
 }
 
-if (!client.connected()) {
-	Serial.println();
-	Serial.println("disconnecting.");
-	client.stop();
-}
